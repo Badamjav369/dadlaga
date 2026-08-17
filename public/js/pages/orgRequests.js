@@ -1,7 +1,3 @@
-// =====================================================
-//  pages/orgRequests.js — байгууллагад ирсэн хүсэлт
-// =====================================================
-
 import { api } from '../core/api.js';
 import { $, $$, lock, unlock } from '../core/dom.js';
 import { blank, skeletonRows, toast, viewHead } from '../components/ui.js';
@@ -49,7 +45,6 @@ export default {
   }
 };
 
-
 async function load() {
   const list = $('#list');
   if (!list) return;
@@ -79,7 +74,6 @@ async function load() {
     list.innerHTML = blank({ icon: 'alert', title: 'Ачаалж чадсангүй', text: err.message });
   }
 }
-
 
 async function setStatus(btn, requestId, status) {
   lock(btn, 'Түр хүлээнэ үү…');

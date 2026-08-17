@@ -1,7 +1,3 @@
-// =====================================================
-//  pages/login.js
-// =====================================================
-
 import { api, Auth, homeFor } from '../core/api.js';
 import { $, lock, unlock, raw } from '../core/dom.js';
 import { authShell, rolePicker, wireRolePicker, setRole, currentRole } from '../components/authShell.js';
@@ -14,8 +10,6 @@ export default {
   title : 'Нэвтрэх',
 
   render({ query }) {
-    // Хаягт заасан дүр байвал түүнийг, үгүй бол одоогийнхыг барина.
-    // Байгууллагаас гарсны дараа login руу буцахад дүр хэвээр үлдэнэ.
     const role = query.get('role') || currentRole();
 
     const body = `
@@ -51,7 +45,6 @@ export default {
     wireEyes();
     wireRolePicker();
 
-    // Товч, дэвсгэр, зүүн талын текстийг нэг дор тааруулна
     setRole(query.get('role') || currentRole());
 
     if (query.get('registered') === '1') {

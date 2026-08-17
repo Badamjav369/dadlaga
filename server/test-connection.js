@@ -1,10 +1,4 @@
-// =====================================================
-//  test-connection.js
-//  Ажиллуулах:  node test-connection.js
-//  Өгөгдлийн сан зөв холбогдсон эсэхийг шалгана
-// =====================================================
-
-const config = require('./config');   // тохиргоог эхлээд шалгана
+const config = require('./config');
 const pool   = require('./db');
 
 (async () => {
@@ -13,13 +7,11 @@ const pool   = require('./db');
     console.log('✅ Холбогдлоо — MySQL', ver[0].v);
     console.log(`   Хэрэглэгч: ${config.DB.user}  ·  Сан: ${config.DB.name}`);
 
-    // Эрх хэт өргөн эсэхийг сануулна
     const [grants] = await pool.query('SHOW GRANTS FOR CURRENT_USER()');
     const line = grants.map(r => Object.values(r)[0]).join(' ');
     if (/ALL PRIVILEGES ON \*\.\*/.test(line)) {
       console.log('   ⚠️  Энэ хэрэглэгч бүх эрхтэй байна. db/06_app_user.sql-ийг үзнэ үү.');
     }
-
 
     const tables = ['students', 'organizations', 'internship_positions', 'internship_requests'];
     for (const t of tables) {

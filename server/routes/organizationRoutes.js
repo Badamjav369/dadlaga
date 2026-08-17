@@ -1,19 +1,8 @@
-// =====================================================
-//  routes/organizationRoutes.js
-//  Байгууллагын жагсаалт, дэлгэрэнгүй, профайл, лого
-//
-//  Салбар болон байршил нь одоо лавлах хүснэгтээс
-//  id-гаар холбогдоно. Чөлөөт текст байхаа больсон тул
-//  "Банк, санхүү" / "Банк санхүү" гэсэн давхардал үүсэхгүй.
-// =====================================================
-
 const router = require('express').Router();
 const pool   = require('../db');
 const { requireAuth, requireOrg, optionalAuth } = require('../middleware/authGuard');
 const { uploadLogo, removeFile }  = require('../middleware/upload');
 
-
-/** id нь лавлах хүснэгтэд байгаа эсэхийг шалгана */
 async function validLookup(table, idCol, id) {
   if (!Number(id)) return false;
   const [[row]] = await pool.query(
@@ -21,12 +10,7 @@ async function validLookup(table, idCol, id) {
   return Boolean(row);
 }
 
-
-// -----------------------------------------------------
 //  GET /api/organizations/filters
-//  Зөвхөн БОДИТООР ашиглагдаж буй утгуудыг буцаана.
-//  Ингэснээр оюутан 30 хоосон сонголт хардаггүй.
-// -----------------------------------------------------
 router.get('/filters', async (req, res, next) => {
   try {
     const [industries] = await pool.query(`
@@ -47,10 +31,7 @@ router.get('/filters', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-
-// -----------------------------------------------------
 //  GET /api/organizations/me
-// -----------------------------------------------------
 router.get('/me', requireAuth, requireOrg, async (req, res, next) => {
   try {
     const [[profile]] = await pool.query(`
@@ -84,10 +65,7 @@ router.get('/me', requireAuth, requireOrg, async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-
-// -----------------------------------------------------
 //  PUT /api/organizations/me — профайл засах
-// -----------------------------------------------------
 router.put('/me', requireAuth, requireOrg, async (req, res, next) => {
   try {
     const { name, email, phone, industry_id, location_id, website } = req.body;
@@ -131,10 +109,7 @@ router.put('/me', requireAuth, requireOrg, async (req, res, next) => {
   }
 });
 
-
-// -----------------------------------------------------
 //  POST /api/organizations/me/logo
-// -----------------------------------------------------
 router.post('/me/logo', requireAuth, requireOrg, uploadLogo, async (req, res, next) => {
   try {
     if (!req.file) return res.status(400).json({ message: 'Зураг сонгоно уу.' });
@@ -154,10 +129,7 @@ router.post('/me/logo', requireAuth, requireOrg, uploadLogo, async (req, res, ne
   } catch (err) { next(err); }
 });
 
-
-// -----------------------------------------------------
 //  DELETE /api/organizations/me/logo
-// -----------------------------------------------------
 router.delete('/me/logo', requireAuth, requireOrg, async (req, res, next) => {
   try {
     const [[old]] = await pool.query(
@@ -174,10 +146,7 @@ router.delete('/me/logo', requireAuth, requireOrg, async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-
-// -----------------------------------------------------
 //  GET /api/organizations?q=&industry=<id>&location=<id>
-// -----------------------------------------------------
 router.get('/', async (req, res, next) => {
   try {
     const q          = (req.query.q || '').trim();
@@ -206,10 +175,7 @@ router.get('/', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-
-// -----------------------------------------------------
 //  GET /api/organizations/:id — дэлгэрэнгүй + чиглэлүүд
-// -----------------------------------------------------
 router.get('/:id', optionalAuth, async (req, res, next) => {
   try {
     const orgId = Number(req.params.id);
@@ -226,7 +192,6 @@ router.get('/:id', optionalAuth, async (req, res, next) => {
 
     if (!org) return res.status(404).json({ message: 'Байгууллага олдсонгүй.' });
 
-    // Нэвтэрсэн оюутан бол өөрийнх нь хүсэлтийн төлөвийг нэмж харуулна
     const studentId = req.user?.role === 'student' ? req.user.id : 0;
 
     const [positions] = await pool.query(

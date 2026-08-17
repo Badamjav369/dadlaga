@@ -1,11 +1,5 @@
-// =====================================================
-//  app.js — аппын эхлэл
-//  Маршрутын хүснэгтийг энд нэг дор тодорхойлно
-// =====================================================
-
 import { defineRoutes, startRouter } from './core/router.js';
 import { initTheme } from './core/theme.js';
-
 import login         from './pages/login.js';
 import register      from './pages/register.js';
 import forgot        from './pages/forgot.js';

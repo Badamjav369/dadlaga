@@ -1,8 +1,3 @@
-// =====================================================
-//  components/passwordForm.js — нууц үг солих хэсэг
-//  Оюутан ба байгууллагын профайл хоёуланд ашиглагдана
-// =====================================================
-
 import { api } from '../core/api.js';
 import { $, lock, unlock } from '../core/dom.js';
 import { passwordField, wireEyes, toast } from './ui.js';

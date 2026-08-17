@@ -1,16 +1,7 @@
-// =====================================================
-//  components/topbar.js — дээд мөр ба гар утасны доод таб
-//
-//  Ижил холбоосыг хоёр газар зурна:
-//    .tabs-nav — өргөн дэлгэц дээр дээд талд
-//    .tabbar   — нарийн дэлгэц дээр доод талд, дүрстэй
-// =====================================================
-
 import { esc } from '../core/dom.js';
 import { Auth, homeFor } from '../core/api.js';
 import { themeButton } from '../core/theme.js';
 
-/* -------- Дүрсүүд -------- */
 const I = {
   building: `<path d="M3 21h18M5 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16M15 21V9h2a2 2 0 0 1 2 2v10M9 7h2M9 11h2M9 15h2"/>`,
   send    : `<path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>`,
@@ -24,7 +15,6 @@ const icon = name => `
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[name]}</svg>`;
 
-/* -------- Холбоос: [хаяг, урт нэр, богино нэр, дүрс] -------- */
 const LINKS = {
   student: [
     ['#/organizations', 'Байгууллагууд', 'Байгууллага', 'building'],
@@ -35,7 +25,6 @@ const LINKS = {
     ['#/org/profile',  'Байгууллагын мэдээлэл', 'Мэдээлэл', 'gear']
   ]
 };
-
 
 export function topbar(user, hash) {
   const here  = (hash || '').split('?')[0];
@@ -73,7 +62,6 @@ export function topbar(user, hash) {
         </a>`).join('')}
     </nav>`;
 }
-
 
 export function wireTopbar() {
   document.querySelector('[data-logout]')?.addEventListener('click', () => {

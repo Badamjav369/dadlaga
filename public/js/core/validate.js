@@ -1,8 +1,3 @@
-// =====================================================
-//  core/validate.js — талбар шалгах дүрмүүд
-//  Сервер талын шалгалттай ижил дүрэм — хоёулаа шалгана
-// =====================================================
-
 export const isEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(v || '').trim());
 export const isPhone = v => /^[689]\d{7}$/.test(String(v || '').trim());
 export const isUser  = v => /^[a-zA-Z0-9_.]{3,50}$/.test(String(v || '').trim());
@@ -16,16 +11,6 @@ export const MSG = {
   match   : 'Хоёр нууц үг ижил байх ёстой.'
 };
 
-/**
- * Дүрмийн жагсаалтаар маягт шалгана.
- *
- *   check(form, [
- *     ['email', v => isEmail(v) || MSG.email],
- *     ['phone', v => isPhone(v) || MSG.phone]
- *   ])
- *
- * Дүрэм true буцаавал зөв, мөр буцаавал алдааны текст.
- */
 export function check(form, rules) {
   clearErrors(form);
   let ok = true;
@@ -59,7 +44,6 @@ export function clearErrors(form) {
   });
 }
 
-/** Серверээс ирсэн алдаануудыг талбаруудад тараана */
 export function applyServerErrors(form, errors) {
   Object.entries(errors || {}).forEach(([id, msg]) => {
     const el = form.querySelector('#' + id);
@@ -67,5 +51,4 @@ export function applyServerErrors(form, errors) {
   });
 }
 
-/** Хоосон эсэхийг шалгах богино дүрэм */
 export const required = (msg = MSG.required) => v => Boolean(String(v).trim()) || msg;

@@ -1,15 +1,3 @@
-// =====================================================
-//  core/router.js — hash-д суурилсан чиглүүлэгч
-//
-//  Хуудас бүр дараах бүтэцтэй объект экспортлоно:
-//    { access, title, layout, render(ctx), mount(ctx) }
-//
-//  access : 'guest' | 'student' | 'org' | 'any'
-//  layout : 'auth' | 'app'
-//  render : HTML мөр буцаана (async байж болно)
-//  mount  : DOM-д орсны дараа ажиллана, эвент холбоно
-// =====================================================
-
 import { Auth, homeFor } from './api.js';
 import { $ } from './dom.js';
 import { topbar, wireTopbar } from '../components/topbar.js';
@@ -17,7 +5,6 @@ import { topbar, wireTopbar } from '../components/topbar.js';
 let ROUTES = [];
 let current = null;
 
-/** '/organization/:id' → зохицох regexp болон параметрийн нэрс */
 function compile(path) {
   const keys = [];
   const rx = path.replace(/:([a-zA-Z]+)/g, (_, key) => {
@@ -33,7 +20,6 @@ export function defineRoutes(list) {
 
 function match(hash) {
   const path = (hash.replace(/^#/, '') || '/').split('?')[0];
-
   for (const route of ROUTES) {
     const hit = path.match(route.rx);
     if (!hit) continue;
@@ -45,7 +31,6 @@ function match(hash) {
   return null;
 }
 
-/** Хаягийн мөрөөс query параметр авах (?token=... гэх мэт) */
 export function queryParams() {
   const q = location.hash.split('?')[1] || '';
   return new URLSearchParams(q);
@@ -61,7 +46,6 @@ async function render() {
   const hit  = match(location.hash);
   const user = Auth.user();
 
-  // 1. Хаяг олдсонгүй
   if (!hit) {
     go(user ? homeFor(user.role) : '#/login', { replace: true });
     return;
@@ -69,8 +53,6 @@ async function render() {
 
   const { route, params } = hit;
   const page = route.page;
-
-  // 2. Эрхийн шалгалт
   const loggedIn = Boolean(Auth.token() && user);
 
   if (page.access === 'guest' && loggedIn) {
@@ -86,16 +68,12 @@ async function render() {
     return;
   }
 
-  // 3. Өмнөх хуудсыг цэвэрлэх
   if (current?.destroy) current.destroy();
   current = page;
 
-  // 4. Дүрийн өнгө — зочин хуудсанд оюутны өнгө анхдагч
   document.body.dataset.role = loggedIn ? user.role : (document.body.dataset.role || 'student');
 
   const ctx = { params, query: queryParams(), user, go };
-
-  // 5. Зурах
   const body = await page.render(ctx);
 
   app.innerHTML = page.layout === 'app'

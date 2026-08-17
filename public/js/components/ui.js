@@ -1,10 +1,5 @@
-// =====================================================
-//  components/ui.js — жижиг дахин ашиглагдах хэсгүүд
-// =====================================================
-
 import { html, raw, esc, initial } from '../core/dom.js';
 
-/* -------- Төлөвийн тэмдэг -------- */
 const BADGE = {
   'Илгээсэн'    : 'b-sent',
   'Хүлээн авсан': 'b-review',
@@ -15,8 +10,6 @@ const BADGE = {
 export const badge = status =>
   html`<span class="badge ${BADGE[status] || 'b-sent'}">${status}</span>`;
 
-
-/* -------- Дүрсүүд -------- */
 export const ICON = {
   search  : `<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>`,
   send    : `<path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>`,
@@ -30,8 +23,6 @@ export const svg = (name, cls = '') => `
   <svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[name] || ''}</svg>`;
 
-
-/* -------- Хоосон төлөв -------- */
 export function blank({ icon = 'folder', title, text, action }) {
   return html`
     <div class="blank">
@@ -42,8 +33,6 @@ export function blank({ icon = 'folder', title, text, action }) {
     </div>`;
 }
 
-
-/* -------- Ачаалж буй хэлбэрүүд -------- */
 export const skeletonRows = (n = 3) =>
   Array.from({ length: n }, () => '<div class="skeleton skeleton-row"></div>').join('');
 
@@ -53,8 +42,6 @@ export const skeletonCards = (n = 6) =>
 
 export const skeletonHero = () => '<div class="skeleton skeleton-hero"></div>';
 
-
-/* -------- Мэдэгдэл -------- */
 let toastTimer;
 
 export function toast(text, bad = false) {
@@ -63,7 +50,6 @@ export function toast(text, bad = false) {
 
   const el = document.createElement('div');
   el.className = 'toast' + (bad ? ' bad' : '');
-  // Дэлгэц уншигч мэдэгдлийг унших боломжтой болно
   el.setAttribute('role', 'status');
   el.setAttribute('aria-live', 'polite');
   el.textContent = text;
@@ -73,7 +59,6 @@ export function toast(text, bad = false) {
 }
 
 
-/* -------- Хайрцаган доторх сануулга -------- */
 export function alertBox(id = 'alert') {
   return `<div class="alert" id="${id}" role="alert" hidden></div>`;
 }
@@ -99,13 +84,6 @@ export function hideAlert(id = 'alert') {
   if (box) box.hidden = true;
 }
 
-
-/* -------- Аватар -------- */
-/**
- * Нэрнээс тогтмол өнгө сонгоно.
- * Ижил нэр үргэлж ижил өнгөтэй — жагсаалт дахин ачаалагдахад
- * өнгө үсрэхгүй. Санамсаргүй биш, тооцоолсон утга.
- */
 export function tone(name) {
   let sum = 0;
   const s = String(name || '');
@@ -120,15 +98,6 @@ export function avatar(name, logo, size = '') {
     : html`<div class="avatar ${size}" data-tone="${t}">${initial(name)}</div>`;
 }
 
-
-/* -------- Талбар -------- */
-/**
- * short — нарийн дэлгэцэнд харагдах богино шошго (заавал биш)
- *   field({ id:'industry', label:'Мэргэжлийн чиглэл', short:'Чиглэл' })
- *
- * Хоёуланг нь зэрэг зурж, алийг харуулахыг CSS шийднэ —
- * JS-ээр дэлгэцийн өргөн хэмжих шаардлагагүй.
- */
 export function field({ id, label, short, type = 'text', placeholder = '', autocomplete, disabled, options, min, max }) {
   const input = options
     ? html`<select id="${id}">${raw(options.map(o =>
@@ -153,7 +122,6 @@ export function field({ id, label, short, type = 'text', placeholder = '', autoc
     </div>`;
 }
 
-/** Нууц үгийн талбар — харах товчтой */
 export function passwordField({ id, label, placeholder = '••••••••', autocomplete = 'new-password' }) {
   return html`
     <div class="field">
@@ -166,7 +134,6 @@ export function passwordField({ id, label, placeholder = '•••••••�
     </div>`;
 }
 
-/** Нууц үг харах товчнуудыг ажиллуулна */
 export function wireEyes(root = document) {
   root.querySelectorAll('[data-eye]').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -179,16 +146,12 @@ export function wireEyes(root = document) {
   });
 }
 
-
-/* -------- Статистик хавтан -------- */
 export const tiles = items => html`
   <div class="tiles">
     ${raw(items.map(([num, label]) => html`
       <div class="tile"><b>${num}</b><span class="mono">${label}</span></div>`).join(''))}
   </div>`;
 
-
-/* -------- Хэсгийн толгой -------- */
 export const viewHead = ({ eyebrow, title, sub }) => html`
   <div class="view-head">
     ${raw(eyebrow ? html`<span class="mono">${eyebrow}</span>` : '')}

@@ -1,10 +1,3 @@
-// =====================================================
-//  pages/profile.js — оюутны профайл
-//
-//  Гурван таб: дадлагын байдал / хувийн мэдээлэл / нууц үг.
-//  Хүсэлт олон болоход маягтууд доошоо алдагдахгүй.
-// =====================================================
-
 import { api, Auth } from '../core/api.js';
 import { $, $$, lock, unlock } from '../core/dom.js';
 import { field, alertBox, showAlert, hideAlert, toast, skeletonHero, viewHead } from '../components/ui.js';
@@ -79,7 +72,6 @@ export default {
     wirePasswordForm();
     $('#profileForm').addEventListener('submit', save);
 
-    // Хоёр хүсэлтийг зэрэг явуулна
     const [profileRes, requests] = await Promise.allSettled([
       api('/students/me'),
       api('/requests/my')
@@ -101,8 +93,6 @@ export default {
   }
 };
 
-
-/* -------- Хүсэлт буцаах -------- */
 function wireCancel() {
   $$('[data-cancel]').forEach(btn =>
     btn.addEventListener('click', () => cancel(btn, Number(btn.dataset.cancel))));
@@ -129,12 +119,10 @@ async function cancel(btn, requestId) {
   }
 }
 
-
 function fill(p) {
   ['last_name', 'first_name', 'username', 'email', 'phone', 'school', 'major', 'course']
     .forEach(k => { const el = $('#' + k); if (el) el.value = p[k]; });
 }
-
 
 async function save(e) {
   e.preventDefault();

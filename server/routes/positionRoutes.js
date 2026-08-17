@@ -1,16 +1,8 @@
-// =====================================================
-//  routes/positions.js — дадлагын чиглэл удирдах
-//  Зөвхөн байгууллага өөрийн чиглэлээ удирдана
-// =====================================================
-
 const router = require('express').Router();
 const pool   = require('../db');
 const { requireAuth, requireOrg } = require('../middleware/authGuard');
 
-
-// -----------------------------------------------------
 //  POST /api/positions — шинэ чиглэл нэмэх
-// -----------------------------------------------------
 router.post('/', requireAuth, requireOrg, async (req, res, next) => {
   try {
     const { title, capacity } = req.body;
@@ -33,10 +25,7 @@ router.post('/', requireAuth, requireOrg, async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-
-// -----------------------------------------------------
 //  PUT /api/positions/:id — чиглэл засах
-// -----------------------------------------------------
 router.put('/:id', requireAuth, requireOrg, async (req, res, next) => {
   try {
     const { title, capacity, is_open } = req.body;
@@ -45,8 +34,6 @@ router.put('/:id', requireAuth, requireOrg, async (req, res, next) => {
       return res.status(400).json({ message: 'Чиглэлийн нэр болон авах тоог зөв оруулна уу.' });
     }
 
-    // organization_id-г нөхцөлд оруулснаар өөр байгууллагын
-    // чиглэлийг засах боломжгүй болно
     const [result] = await pool.query(
       `UPDATE internship_positions
        SET title = ?, capacity = ?, is_open = ?
@@ -64,11 +51,7 @@ router.put('/:id', requireAuth, requireOrg, async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-
-// -----------------------------------------------------
 //  DELETE /api/positions/:id — чиглэл устгах
-//  Холбогдох хүсэлтүүд CASCADE-аар хамт устана
-// -----------------------------------------------------
 router.delete('/:id', requireAuth, requireOrg, async (req, res, next) => {
   try {
     const [result] = await pool.query(

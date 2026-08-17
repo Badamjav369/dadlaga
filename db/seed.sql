@@ -1,32 +1,8 @@
--- =====================================================
---  internship_system — ТУРШИЛТЫН ӨГӨГДӨЛ
---
---  schema.sql ажилласны ДАРАА ажиллуулна.
---
---  Бүх бүртгэлийн нууц үг: 123456
---  (өгөгдлийн санд bcrypt hash-аар хадгалагдана)
---
---  Салбар, байршлыг нэрээр нь хайж id-г олно. Ингэснээр
---  id гараар бичих шаардлагагүй — schema.sql-д дугаар
---  өөрчлөгдсөн ч энэ файл ажиллана.
---
---  Дахин ажиллуулах бол эхлээд цэвэрлэнэ:
---    SET FOREIGN_KEY_CHECKS = 0;
---    TRUNCATE internship_requests;
---    TRUNCATE internship_positions;
---    TRUNCATE organizations;
---    TRUNCATE students;
---    SET FOREIGN_KEY_CHECKS = 1;
--- =====================================================
-
 USE internship_system;
 
 SET @pw = '$2b$10$.vyREofqHwgT1lmwDKQ8CeHqbgiEcrkaNk8rwL2F//awV/zvrnzDO';  -- 123456
 
-
--- =====================================================
 --  1. БАЙГУУЛЛАГА (8)
--- =====================================================
 INSERT INTO organizations
   (name, username, password, email, phone, industry_id, location_id, website)
 VALUES
@@ -70,10 +46,7 @@ VALUES
  (SELECT location_id FROM locations  WHERE name = 'Улаанбаатар — Баянгол'),
  NULL);
 
-
--- =====================================================
 --  2. ДАДЛАГЫН ЧИГЛЭЛ (14)
--- =====================================================
 INSERT INTO internship_positions (organization_id, title, capacity, is_open)
 SELECT o.organization_id, t.title, t.capacity, t.is_open
 FROM (
@@ -94,10 +67,7 @@ FROM (
 ) t
 JOIN organizations o ON o.username = t.u;
 
-
--- =====================================================
 --  3. ОЮУТАН (10)
--- =====================================================
 INSERT INTO students
   (last_name, first_name, username, password, email, phone, school, major, course)
 VALUES
@@ -112,44 +82,29 @@ VALUES
 ('Батсайхан','Одбаяр',  'odbayar',  @pw, 'odbayar@example.com',  '88990011', 'СЭЗИС', 'Логистик, тээвэр',      4),
 ('Цэрэнбат','Мишээл',   'misheel',  @pw, 'misheel@example.com',  '94667788', 'ШУТИС', 'Кибер аюулгүй байдал',  4);
 
-
--- =====================================================
 --  4. ХҮСЭЛТ (22)
---  Дөрвөн төлөв бүгд төлөөлөлтэй.
---  Оюутны нэр болон чиглэлийн нэрээр холбоно.
--- =====================================================
 INSERT INTO internship_requests (student_id, position_id, status)
 SELECT s.student_id, p.position_id, t.status
 FROM (
-  -- оюутан            байгууллага  чиглэл                          төлөв
   SELECT 'temuulen' AS u, 'itzone'   AS org, 'Веб хөгжүүлэгч (Frontend)'      AS pos, 'Тэнцсэн'      AS status
   UNION ALL SELECT 'temuulen', 'golomt',   'Мэдээллийн системийн дадлага', 'Тэнцээгүй'
   UNION ALL SELECT 'temuulen', 'digital',  'Мобайл хөгжүүлэгч',            'Илгээсэн'
-
   UNION ALL SELECT 'saraa',    'itzone',   'Веб хөгжүүлэгч (Frontend)',    'Хүлээн авсан'
   UNION ALL SELECT 'saraa',    'unitel',   'Сүлжээний инженер',            'Илгээсэн'
-
   UNION ALL SELECT 'bilguun',  'itzone',   'Backend хөгжүүлэгч',           'Илгээсэн'
   UNION ALL SELECT 'bilguun',  'itzone',   'QA тестер',                    'Хүлээн авсан'
   UNION ALL SELECT 'bilguun',  'digital',  'Мобайл хөгжүүлэгч',            'Тэнцсэн'
-
   UNION ALL SELECT 'anuujin',  'golomt',   'Санхүүгийн шинжээч',           'Тэнцсэн'
   UNION ALL SELECT 'anuujin',  'khanbank', 'Эрсдэлийн удирдлага',          'Тэнцээгүй'
-
   UNION ALL SELECT 'zolboo',   'unitel',   'Дата аналист',                 'Илгээсэн'
   UNION ALL SELECT 'zolboo',   'golomt',   'Мэдээллийн системийн дадлага', 'Хүлээн авсан'
-
   UNION ALL SELECT 'oyunaa',   'digital',  'UI/UX дизайнер',               'Тэнцсэн'
   UNION ALL SELECT 'oyunaa',   'itzone',   'QA тестер',                    'Илгээсэн'
-
   UNION ALL SELECT 'temuujin', 'erdenet',  'Автоматжуулалтын инженер',     'Тэнцсэн'
   UNION ALL SELECT 'temuujin', 'unitel',   'Сүлжээний инженер',            'Хүлээн авсан'
-
   UNION ALL SELECT 'khulan',   'ireedui',  'Багшийн дадлага',              'Тэнцсэн'
-
   UNION ALL SELECT 'odbayar',  'msm',      'Логистикийн зохицуулагч',      'Хүлээн авсан'
   UNION ALL SELECT 'odbayar',  'golomt',   'Санхүүгийн шинжээч',           'Илгээсэн'
-
   UNION ALL SELECT 'misheel',  'khanbank', 'Эрсдэлийн удирдлага',          'Илгээсэн'
   UNION ALL SELECT 'misheel',  'unitel',   'Дата аналист',                 'Тэнцээгүй'
   UNION ALL SELECT 'misheel',  'itzone',   'Backend хөгжүүлэгч',           'Хүлээн авсан'
@@ -159,45 +114,30 @@ JOIN organizations o ON o.username = t.org
 JOIN internship_positions p
      ON p.organization_id = o.organization_id AND p.title = t.pos;
 
-
--- =====================================================
 --  5. ОГНООГ БОДИТ БОЛГОХ
---  Бүгд ижил секундэд үүсвэл эрэмбэлэлт утгагүй болно.
---  Сүүлийн 40 хоногт тархаана.
--- =====================================================
 SET SQL_SAFE_UPDATES = 0;
 
 UPDATE internship_requests
 SET submitted_at = DATE_SUB(NOW(), INTERVAL (request_id * 37 % 40) DAY),
     updated_at   = DATE_SUB(NOW(), INTERVAL (request_id * 13 % 15) DAY);
 
--- Шинэчилсэн огноо илгээсэн огнооноос өмнө байж болохгүй
 UPDATE internship_requests
 SET updated_at = submitted_at
 WHERE updated_at < submitted_at;
 
 SET SQL_SAFE_UPDATES = 1;
 
-
--- =====================================================
 --  6. ШАЛГАЛТ
--- =====================================================
-
 SELECT 'Мөрийн тоо' AS шалгалт;
 SELECT 'organizations'        AS хүснэгт, COUNT(*) AS мөр FROM organizations
 UNION ALL SELECT 'internship_positions', COUNT(*) FROM internship_positions
 UNION ALL SELECT 'students',             COUNT(*) FROM students
 UNION ALL SELECT 'internship_requests',  COUNT(*) FROM internship_requests;
--- Хүлээгдэж буй: 8 / 14 / 10 / 22
-
-
 SELECT 'Төлөв бүрийн тоо' AS шалгалт;
 SELECT status AS төлөв, COUNT(*) AS тоо
 FROM internship_requests
 GROUP BY status
 ORDER BY FIELD(status, 'Илгээсэн', 'Хүлээн авсан', 'Тэнцсэн', 'Тэнцээгүй');
-
-
 SELECT 'Чиглэлийн байдал' AS шалгалт;
 SELECT o.name AS байгууллага, v.title AS чиглэл,
        v.capacity AS багтаамж, v.accepted_count AS тэнцсэн,
@@ -205,31 +145,3 @@ SELECT o.name AS байгууллага, v.title AS чиглэл,
 FROM v_position_stats v
 JOIN organizations o ON o.organization_id = v.organization_id
 ORDER BY o.name, v.title;
-
-
--- =====================================================
---  ТУРШИЛТЫН БҮРТГЭЛ
---  Бүх нууц үг: 123456
---
---  ОЮУТАН
---    temuulen  — МУИС, Програм хангамж, 4-р курс (тэнцсэн бүртгэлтэй)
---    saraa     — ШУТИС, Мэдээллийн технологи, 3-р курс
---    bilguun   — ШУТИС, Компьютерын ухаан, 4-р курс (3 хүсэлттэй)
---    anuujin   — СЭЗИС, Санхүү, 3-р курс
---    zolboo    — МУИС, Дата шинжлэх ухаан, 4-р курс
---    oyunaa    — МУИС, График дизайн, 2-р курс
---    temuujin  — ШУТИС, Цахилгаан инженер, 4-р курс
---    khulan    — МУБИС, Багш математик, 3-р курс
---    odbayar   — СЭЗИС, Логистик, 4-р курс
---    misheel   — ШУТИС, Кибер аюулгүй байдал, 4-р курс (4 хүсэлттэй)
---
---  БАЙГУУЛЛАГА
---    itzone    — Ай Ти Зон, 3 чиглэл, олон хүсэлттэй
---    digital   — Дижитал Концепт, 2 чиглэл
---    golomt    — Голомт Банк, 2 чиглэл
---    khanbank  — Хаан Банк, 2 чиглэл (нэг нь хаагдсан)
---    unitel    — Юнител, 2 чиглэл
---    erdenet   — Эрдэнэт Үйлдвэр, орон нутаг
---    msm       — МСМ Групп, тээвэр логистик
---    ireedui   — Ирээдүй Сургууль, боловсрол
--- =====================================================

@@ -1,11 +1,6 @@
-// =====================================================
-//  components/authShell.js — нэвтрэх талын хоёр хуваалттай хүрээ
-// =====================================================
-
 import { html, raw, esc } from '../core/dom.js';
 import { themeButton } from '../core/theme.js';
 
-/** Дүрээс хамаарах зүүн талын текст */
 export const STAGE = {
   student: {
     eyebrow: 'Оюутны булан',
@@ -27,7 +22,6 @@ export const STAGE = {
   }
 };
 
-/** Зүүн талын доторх хэсэг — дүр солиход энэ л шинэчлэгдэнэ */
 export function stageBody(role) {
   const s = STAGE[role] || STAGE.student;
 
@@ -46,12 +40,6 @@ export function stageBody(role) {
     </ol>`;
 }
 
-/**
- * Хоёр хуваалттай хүрээ.
- * body  — баруун талын картны доторх HTML
- * role  — зүүн талын текстийг сонгоно
- * quiet — true бол алхмуудыг харуулахгүй (нууц үг сэргээх хуудсанд)
- */
 export function authShell({ body, role = 'student', quiet = false }) {
   const s = STAGE[role] || STAGE.student;
 
@@ -77,14 +65,6 @@ export function authShell({ body, role = 'student', quiet = false }) {
     ${themeButton('theme-fab')}`;
 }
 
-/**
- * Дүр сонгогч — оюутан / байгууллага
- *
- * active нь заавал body[data-role]-той таарч байх ёстой.
- * Өмнө нь aria-pressed-ийг оюутан дээр хатуу бичдэг байсан тул
- * байгууллагаас гармагц гүйгч баруун талд, цагаан текст зүүн
- * талд үлдэж зөрдөг байв.
- */
 export function rolePicker(active = 'student') {
   const btn = (role, num, label) => `
     <button type="button" class="role" data-role-btn="${role}"
@@ -100,12 +80,6 @@ export function rolePicker(active = 'student') {
     </div>`;
 }
 
-
-/**
- * Дүрийг тавих цорын ганц газар.
- * body[data-role], товчны aria-pressed, зүүн талын текст
- * гурвуулаа энд хамт шинэчлэгдэнэ — тиймээс зөрөх боломжгүй.
- */
 export function setRole(role) {
   document.body.dataset.role = role;
 
@@ -116,10 +90,6 @@ export function setRole(role) {
   if (stage && !stage.dataset.quiet) stage.innerHTML = stageBody(role);
 }
 
-/**
- * Дүр сонгогчийг ажиллуулна.
- * onChange(role) буцаж дуудагдана — маягтын талбарууд солигдоно.
- */
 export function wireRolePicker(onChange) {
   document.querySelectorAll('[data-role-btn]').forEach(btn => {
     btn.addEventListener('click', () => {

@@ -1,18 +1,10 @@
-// =====================================================
 //  routes/requests.js — дадлагын хүсэлт
-// =====================================================
-
 const router = require('express').Router();
 const pool   = require('../db');
 const { requireAuth, requireStudent, requireOrg } = require('../middleware/authGuard');
-
 const STATUSES = ['Илгээсэн', 'Хүлээн авсан', 'Тэнцсэн', 'Тэнцээгүй'];
 
-
-// -----------------------------------------------------
 //  POST /api/requests — оюутан хүсэлт илгээх
-//  body: { position_id }
-// -----------------------------------------------------
 router.post('/', requireAuth, requireStudent, async (req, res, next) => {
   try {
     const positionId = Number(req.body.position_id);
@@ -41,7 +33,6 @@ router.post('/', requireAuth, requireStudent, async (req, res, next) => {
     res.status(201).json({ request_id: result.insertId, message: 'Хүсэлт илгээгдлээ.' });
 
   } catch (err) {
-    // UNIQUE(student_id, position_id) зөрчигдсөн
     if (err.code === 'ER_DUP_ENTRY') {
       return res.status(409).json({ message: 'Та энэ чиглэлд аль хэдийн хүсэлт илгээсэн байна.' });
     }
@@ -49,10 +40,7 @@ router.post('/', requireAuth, requireStudent, async (req, res, next) => {
   }
 });
 
-
-// -----------------------------------------------------
 //  GET /api/requests/my — оюутны илгээсэн хүсэлтүүд
-// -----------------------------------------------------
 router.get('/my', requireAuth, requireStudent, async (req, res, next) => {
   try {
     const [rows] = await pool.query(
@@ -72,11 +60,7 @@ router.get('/my', requireAuth, requireStudent, async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-
-// -----------------------------------------------------
 //  DELETE /api/requests/:id — оюутан хүсэлтээ буцаах
-//  Зөвхөн 'Илгээсэн' төлөвтэй үед боломжтой
-// -----------------------------------------------------
 router.delete('/:id', requireAuth, requireStudent, async (req, res, next) => {
   try {
     const [result] = await pool.query(
@@ -96,10 +80,7 @@ router.delete('/:id', requireAuth, requireStudent, async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-
-// -----------------------------------------------------
 //  GET /api/requests/incoming?status=... — байгууллагад ирсэн хүсэлт
-// -----------------------------------------------------
 router.get('/incoming', requireAuth, requireOrg, async (req, res, next) => {
   try {
     const status = (req.query.status || '').trim();
@@ -126,11 +107,7 @@ router.get('/incoming', requireAuth, requireOrg, async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-
-// -----------------------------------------------------
 //  PATCH /api/requests/:id/status — төлөв өөрчлөх
-//  body: { status }
-// -----------------------------------------------------
 router.patch('/:id/status', requireAuth, requireOrg, async (req, res, next) => {
   try {
     const { status } = req.body;
@@ -141,7 +118,6 @@ router.patch('/:id/status', requireAuth, requireOrg, async (req, res, next) => {
       });
     }
 
-    // Тэнцсэн болгохын өмнө орон тоо үлдсэн эсэхийг шалгана
     if (status === 'Тэнцсэн') {
       const [[check]] = await pool.query(
         `SELECT v.remaining_slots, r.status AS current_status
@@ -177,6 +153,5 @@ router.patch('/:id/status', requireAuth, requireOrg, async (req, res, next) => {
 
   } catch (err) { next(err); }
 });
-
 
 module.exports = router;

@@ -1,7 +1,3 @@
-// =====================================================
-//  pages/register.js
-// =====================================================
-
 import { api } from '../core/api.js';
 import { $, lock, unlock } from '../core/dom.js';
 import { authShell, rolePicker, wireRolePicker, setRole, currentRole } from '../components/authShell.js';
@@ -18,7 +14,6 @@ const COURSES = [
   { value: '5', label: 'Магистр' }
 ];
 
-/* -------- Дүр тус бүрийн талбарууд -------- */
 const studentFields = () => `
   <div class="pair">
     ${field({ id: 'last_name',  label: 'Овог', placeholder: 'Батбаяр' })}
@@ -30,9 +25,6 @@ const studentFields = () => `
     ${field({ id: 'course', label: 'Анги', options: COURSES })}
   </div>`;
 
-// Салбар, байршил нь тогтмол жагсаалтаас сонгогдоно.
-// Чөлөөт текст байсан үед "Банк, санхүү" ба "Банк санхүү"
-// гэсэн хоёр өөр утга үүсэж, шүүлтүүрт давхардаж байсан.
 const orgFields = () => `
   ${field({ id: 'name', label: 'Байгууллагын нэр', placeholder: 'Ай Ти Зон ХХК' })}
   ${field({ id: 'industry_id', label: 'Үйл ажиллагааны чиглэл',
@@ -43,8 +35,6 @@ const orgFields = () => `
     ${field({ id: 'website', label: 'Вэбсайт', type: 'url', placeholder: 'https://example.mn' })}
   </div>`;
 
-
-/** Хоёр select-ийг серверээс ирсэн жагсаалтаар дүүргэнэ */
 async function loadLookups() {
   try {
     const { industries, locations } = await lookups();
@@ -57,7 +47,6 @@ async function loadLookups() {
     });
   }
 }
-
 
 export default {
   access: 'guest',
@@ -106,7 +95,6 @@ export default {
     wireEyes();
     setRole(currentRole());
 
-    // Дүр солиход зөвхөн дээд талын талбарууд солигдоно
     wireRolePicker(role => {
       $('#roleFields').innerHTML = role === 'student' ? studentFields() : orgFields();
       if (role === 'org') loadLookups();

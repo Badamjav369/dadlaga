@@ -1,7 +1,3 @@
-// =====================================================
-//  pages/reset.js — токеноор шинэ нууц үг тавих
-// =====================================================
-
 import { api } from '../core/api.js';
 import { $, lock, unlock, esc } from '../core/dom.js';
 import { authShell } from '../components/authShell.js';
@@ -44,7 +40,6 @@ export default {
       return;
     }
 
-    // Токен хүчинтэй эсэхийг эхлээд шалгана
     try {
       await api('/auth/reset/' + encodeURIComponent(token));
       form.hidden = false;

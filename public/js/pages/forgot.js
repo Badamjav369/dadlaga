@@ -1,7 +1,3 @@
-// =====================================================
-//  pages/forgot.js — сэргээх холбоос хүсэх
-// =====================================================
-
 import { api } from '../core/api.js';
 import { $, lock, unlock, esc } from '../core/dom.js';
 import { authShell, rolePicker, wireRolePicker, setRole, currentRole } from '../components/authShell.js';
@@ -34,7 +30,6 @@ export default {
   },
 
   mount() {
-    // Дүр солиход зүүн талын текст өөрчлөгдөхгүй байхыг тэмдэглэнэ
     $('[data-stage]')?.setAttribute('data-quiet', '1');
     wireRolePicker();
     setRole(currentRole());
@@ -56,8 +51,6 @@ export default {
           body: { username: $('#username').value.trim(), role: currentRole() }
         });
 
-        // Хөгжүүлэлтийн горимд сервер линкийг буцаадаг.
-        // Жинхэнэ орчинд энэ линк зөвхөн и-мэйлээр очно.
         if (res.dev_link) {
           const hash = '#/reset?token=' + encodeURIComponent(res.dev_link.split('token=')[1]);
           showAlertHTML(`

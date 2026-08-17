@@ -1,16 +1,6 @@
-// =====================================================
-//  components/cards.js — жагсаалтын мөр, карт
-// =====================================================
-
 import { html, raw, esc, day } from '../core/dom.js';
 import { avatar, badge, tone } from './ui.js';
 
-
-/* -------- Орон тооны зурвас -------- */
-/**
- * Тоо уншихаас илүү хэлбэр хараад ойлгоно.
- * capacity — нийт авах, accepted — тэнцсэн тоо
- */
 export function capacityBar(capacity, accepted) {
   const cap  = Math.max(Number(capacity) || 0, 0);
   const took = Math.min(Math.max(Number(accepted) || 0, 0), cap);
@@ -31,8 +21,6 @@ export function capacityBar(capacity, accepted) {
     </div>`;
 }
 
-
-/* -------- Байгууллагын карт (оюутны жагсаалт) -------- */
 export const orgCard = o => html`
   <a class="org-card" href="#/organizations/${o.organization_id}"
      style="--a-line:var(--t${tone(o.name)})">
@@ -47,8 +35,6 @@ export const orgCard = o => html`
     </div>
   </a>`;
 
-
-/* -------- Дадлагын чиглэл (байгууллагын дэлгэрэнгүй дээр) -------- */
 export function positionRow(p) {
   let action;
 
@@ -69,13 +55,10 @@ export function positionRow(p) {
     </div>`;
 }
 
-
-/* -------- Байгууллагад ирсэн хүсэлт -------- */
 export function incomingRow(r) {
   const btn = (status, label, cls = '') => html`
     <button type="button" class="btn sm ${cls}" data-id="${r.request_id}" data-set="${status}">${label}</button>`;
 
-  // Одоогийн төлөвөөс хамаарч дараагийн алхмуудыг л харуулна
   const acts = {
     'Илгээсэн'    : btn('Хүлээн авсан', 'Хүлээн авах') + btn('Тэнцээгүй', 'Татгалзах', 'ghost'),
     'Хүлээн авсан': btn('Тэнцсэн', 'Тэнцсэн', 'pass') + btn('Тэнцээгүй', 'Тэнцээгүй', 'ghost'),
@@ -119,8 +102,6 @@ export function incomingRow(r) {
     </div>`;
 }
 
-
-/* -------- Байгууллагын өөрийн чиглэл (удирдах) -------- */
 export const managedPositionRow = p => html`
   <div class="row">
     <div class="row-in">

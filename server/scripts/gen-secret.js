@@ -1,13 +1,4 @@
-// =====================================================
-//  scripts/gen-secret.js
-//  Ажиллуулах:  npm run gen-secret
-//
-//  Санамсаргүй түлхүүр болон нууц үг үүсгэнэ.
-//  Гараар бодож олсон мөр хэзээ ч хангалттай санамсаргүй байдаггүй.
-// =====================================================
-
 const crypto = require('crypto');
-
 const secret = crypto.randomBytes(48).toString('base64url');
 const dbPass = crypto.randomBytes(18).toString('base64url');
 

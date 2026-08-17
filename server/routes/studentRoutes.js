@@ -1,15 +1,8 @@
-// =====================================================
-//  routes/students.js — оюутны профайл
-// =====================================================
-
 const router = require('express').Router();
 const pool   = require('../db');
 const { requireAuth, requireStudent } = require('../middleware/authGuard');
 
-
-// -----------------------------------------------------
 //  GET /api/students/me — профайл + дадлагын одоогийн төлөв
-// -----------------------------------------------------
 router.get('/me', requireAuth, requireStudent, async (req, res, next) => {
   try {
     const [[profile]] = await pool.query(
@@ -19,7 +12,6 @@ router.get('/me', requireAuth, requireStudent, async (req, res, next) => {
 
     if (!profile) return res.status(404).json({ message: 'Бүртгэл олдсонгүй.' });
 
-    // Дадлагын одоогийн төлөв: тэнцсэн хүсэлт байвал түүнийг харуулна
     const [[current]] = await pool.query(
       `SELECT r.status, p.title AS position_title, o.name AS organization_name
        FROM internship_requests r
@@ -35,10 +27,7 @@ router.get('/me', requireAuth, requireStudent, async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-
-// -----------------------------------------------------
 //  PUT /api/students/me — профайл засах
-// -----------------------------------------------------
 router.put('/me', requireAuth, requireStudent, async (req, res, next) => {
   try {
     const { last_name, first_name, email, phone, school, major, course } = req.body;
@@ -77,6 +66,5 @@ router.put('/me', requireAuth, requireStudent, async (req, res, next) => {
     next(err);
   }
 });
-
 
 module.exports = router;

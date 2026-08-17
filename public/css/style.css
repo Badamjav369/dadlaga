@@ -1,8 +1,4 @@
-/* Дадлага.мн
-   1 Токен · 2 Суурь · 3 Нэвтрэх · 4 Топбар · 5 Байрлал
-   6 Талбар · 7 Карт · 8 Үнэмлэх · 9 Харанхуй · 10 Дэлгэц */
-
-/* ═══ 1. ТОКЕН ═══ */
+/* 1. ТОКЕН */
 :root{
   --ink:        #0D1420;
   --paper:      #EEF1F5;
@@ -42,7 +38,7 @@ body[data-role="org"]{
 }
 
 
-/* ═══ 2. СУУРЬ ═══ */
+/* 2. СУУРЬ */
 *,*::before,*::after{ box-sizing:border-box; }
 [hidden]{ display:none !important; }
 
@@ -90,7 +86,7 @@ img, svg, video, canvas{ max-width:100%; height:auto; }
 .brand span{ color:var(--accent); transition:color .4s var(--ease); }
 
 
-/* ═══ 3. НЭВТРЭХ ХУУДАС ═══ */
+/* 3. НЭВТРЭХ ХУУДАС */
 .auth{
   display:grid;
   grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
@@ -212,7 +208,7 @@ body[data-role="org"] .roles-thumb{ transform:translateX(100%); }
 .role[aria-pressed="true"]{ color:var(--accent-ink); }
 
 
-/* ═══ 4. ТОПБАР ═══ */
+/* 4. ТОПБАР */
 .topbar{
   position:sticky;
   top:0;
@@ -312,7 +308,7 @@ html[data-theme="dark"]  .i-moon{ display:none; }
 .tabbar-item[aria-current="page"]{ color:var(--accent); }
 
 
-/* ═══ 5. БАЙРЛАЛ ═══ */
+/* 5. БАЙРЛАЛ */
 #app{ min-width:0; }
 .view{ max-width:1140px; margin:0 auto; padding:38px 26px 96px; min-width:0; }
 .view-narrow{ max-width:780px; }
@@ -468,7 +464,6 @@ html[data-theme="dark"]  .i-moon{ display:none; }
 }
 .blank-icon svg{ width:25px; height:25px; }
 
-/* Skeleton өндөр нь жинхэнэ агуулгатай тэнцүү — хуудас үсрэхгүй */
 .skeleton{
   border-radius:var(--r-lg);
   background:linear-gradient(90deg, var(--line-soft) 25%, var(--line) 37%, var(--line-soft) 63%);
@@ -481,7 +476,7 @@ html[data-theme="dark"]  .i-moon{ display:none; }
 .skeleton-hero{ height:186px; margin-bottom:20px; }
 
 
-/* ═══ 6. ТАЛБАР & ТОВЧ ═══ */
+/* 6. ТАЛБАР & ТОВЧ */
 .field{ display:grid; gap:7px; margin-bottom:16px; min-width:0; }
 .field label{ color:var(--muted); font-size:12.5px; font-weight:600; }
 .field input,
@@ -593,11 +588,10 @@ html[data-theme="dark"]  .i-moon{ display:none; }
 @keyframes rise{ from{ opacity:0; transform:translate(-50%, 12px) } }
 
 
-/* ═══ 7. КАРТ ═══ */
+/* 7. КАРТ */
 .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(286px,1fr)); gap:17px; }
 .grid > *{ min-width:0; }
 
-/* Аватарын өнгө нэрнээс тооцогдоно — жагсаалтад бүгд ижил байхгүй */
 .avatar{
   width:46px; height:46px;
   aspect-ratio:1;
@@ -685,7 +679,6 @@ html[data-theme="dark"]  .i-moon{ display:none; }
 .b-pass  { background:#E7F6EE; border-color:#BEE3CE; color:#1D6B42; }
 .b-fail  { background:#FDECEA; border-color:#F2C4BF; color:#8E2A20; }
 
-/* Орон тооны зурвас */
 .cap{ margin-top:12px; max-width:320px; }
 .cap-track{ height:6px; border-radius:999px; background:var(--line); overflow:hidden; display:flex; }
 .cap-fill{ height:100%; background:var(--success); transition:width .4s var(--ease); }
@@ -694,7 +687,6 @@ html[data-theme="dark"]  .i-moon{ display:none; }
 .cap-label b{ color:var(--text); }
 .cap-label.full b{ color:var(--faint); }
 
-/* Ирсэн хүсэлтийн карт */
 .req{ padding:0; overflow:hidden; }
 .req-head{
   display:flex;
@@ -729,7 +721,6 @@ html[data-theme="dark"]  .i-moon{ display:none; }
   border-top:1px solid var(--line-soft);
 }
 
-/* Лого */
 .logo-row{ display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
 .logo-frame{
   width:86px; height:86px;
@@ -744,7 +735,6 @@ html[data-theme="dark"]  .i-moon{ display:none; }
 .logo-acts{ display:flex; gap:9px; flex-wrap:wrap; align-items:center; }
 .logo-acts p{ width:100%; font-size:12.5px; color:var(--muted); }
 
-/* Шүүлтүүрийн мөр */
 .filter-bar{
   display:grid;
   grid-template-columns:1.7fr 1fr 1fr;
@@ -769,7 +759,6 @@ html[data-theme="dark"]  .i-moon{ display:none; }
   padding-bottom:12px;
 }
 
-/* Харанхуй толгой — нэвтрэх хуудасны өнгө аястай холбоно */
 .hero{
   position:relative;
   overflow:hidden;
@@ -815,7 +804,7 @@ html[data-theme="dark"]  .i-moon{ display:none; }
 .hero-facts a{ color:#fff; overflow-wrap:anywhere; }
 
 
-/* ═══ 8. ДАДЛАГЫН ҮНЭМЛЭХ ═══ */
+/* 8. ДАДЛАГЫН ҮНЭМЛЭХ */
 .placement{
   position:relative;
   display:grid;
@@ -837,7 +826,6 @@ html[data-theme="dark"]  .i-moon{ display:none; }
 .placement[data-state="pass"] .pl-stub{ --stub:#0A3222; }
 .placement[data-state="review"] .pl-stub{ --stub:#1E1505; }
 
-/* Тэнцээгүй нь цайвар — устгахгүй, гэхдээ нүд эхэлж энэ дээр буухгүй */
 .placement[data-state="fail"]{ box-shadow:var(--sh-1); }
 .placement[data-state="fail"] .pl-main{ background:var(--card); color:var(--muted); }
 .placement[data-state="fail"] .pl-main::after{ display:none; }
@@ -928,7 +916,6 @@ html[data-theme="dark"]  .i-moon{ display:none; }
 }
 .pl-contact a{ color:#fff; }
 
-/* Цоолборыг radial-gradient-ээр гаргана — хоёр өнцөгт хагас дугуй */
 .pl-stub{
   --stub:rgba(0,0,0,.24);
   position:relative;
@@ -955,7 +942,7 @@ html[data-theme="dark"]  .i-moon{ display:none; }
 .pl-cell b{ font-size:15px; font-weight:600; color:#fff; }
 
 
-/* ═══ 9. ХАРАНХУЙ ГОРИМ ═══ */
+/* 9. ХАРАНХУЙ ГОРИМ */
 html[data-theme="dark"]{
   color-scheme:dark;
   --ink:        #04070C;
@@ -1002,7 +989,7 @@ html[data-theme="dark"] .btn.pass{ color:#fff; }
 html[data-theme="dark"] .btn.ghost{ color:var(--muted); }
 
 
-/* ═══ 10. ДЭЛГЭЦИЙН ХЭМЖЭЭ ═══ */
+/* 10. ДЭЛГЭЦИЙН ХЭМЖЭЭ */
 @media (max-width:900px){
   .auth{ grid-template-columns:1fr; }
   .auth-stage{
@@ -1045,11 +1032,9 @@ html[data-theme="dark"] .btn.ghost{ color:var(--muted); }
     padding-bottom:calc(4px + env(safe-area-inset-bottom));
   }
 
-  /* Доод таб агуулгыг хаахгүй байх зай */
   .view{ padding:22px 16px calc(86px + env(safe-area-inset-bottom)); }
   .toast{ bottom:calc(80px + env(safe-area-inset-bottom)); }
 
-  /* iOS дээр 16px-ээс жижиг талбарт орохоор дэлгэц томордог */
   .field input, .field select, .field textarea{ font-size:16px; padding:13px 15px; }
 
   .btn{ padding:15px; }
@@ -1093,7 +1078,6 @@ html[data-theme="dark"] .btn.ghost{ color:var(--muted); }
   .skeleton-card{ height:190px; }
   .skeleton-hero{ height:210px; }
 
-  /* Үнэмлэх босоо болно — цоолбор дээд хоёр буланд шилжинэ */
   .placement{ grid-template-columns:1fr; border-radius:var(--r); }
   .pl-main{ padding:22px 20px; }
   .pl-org{ font-size:20px; }
@@ -1117,7 +1101,6 @@ html[data-theme="dark"] .btn.ghost{ color:var(--muted); }
     background-size:11px 2px;
   }
 
-  /* Богино нэр рүү шилжсэн тул таб бүгд багтана — гүйлгэх шаардлагагүй */
   .seg{
     display:grid;
     grid-auto-flow:column;

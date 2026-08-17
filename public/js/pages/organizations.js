@@ -1,11 +1,3 @@
-// =====================================================
-//  pages/organizations.js — байгууллагуудын жагсаалт
-//
-//  Шүүлтүүр нь жагсаалтаас сонгодог. Таб хэлбэртэй
-//  байхад салбар олон бол хажуу тийш сунаж, нарийн
-//  дэлгэцэнд багтахаа больсон.
-// =====================================================
-
 import { api } from '../core/api.js';
 import { $, $$, esc } from '../core/dom.js';
 import { field, blank, skeletonCards, viewHead } from '../components/ui.js';
@@ -47,7 +39,6 @@ export default {
   },
 
   async mount() {
-    // Шүүлтүүрийн сонголт — зөвхөн бодитоор ашиглагдаж буй утгууд
     try {
       const { industries, locations } = await api('/organizations/filters');
       if (!$('#industry')) return;
@@ -61,7 +52,6 @@ export default {
       });
     }
 
-    // Бичих бүрт хайхгүй — 350мс амарсны дараа нэг л удаа
     $('#q').addEventListener('input', () => {
       clearTimeout(timer);
       timer = setTimeout(load, 350);
@@ -83,11 +73,6 @@ export default {
   destroy() { clearTimeout(timer); }
 };
 
-
-/**
- * Жагсаалтыг select-д дүүргэнэ.
- * Хажууд нь тухайн шүүлтүүрт хэдэн байгууллага байгааг харуулна.
- */
 function fillSelect(select, list, allLabel) {
   select.innerHTML =
     `<option value="">${esc(allLabel)}</option>` +
@@ -103,14 +88,13 @@ async function load() {
   const industry = $('#industry').value;
   const location = $('#location').value;
 
-  // Идэвхтэй шүүлтүүрийг өнгөөр тэмдэглэнэ
   $('#industry').dataset.on = String(Boolean(industry));
   $('#location').dataset.on = String(Boolean(location));
   $('#reset').hidden = !(q || industry || location);
 
   try {
     const orgs = await api('/organizations?' + new URLSearchParams({ q, industry, location }));
-    if (!$('#list')) return;   // хуудас солигдсон бол зогсоно
+    if (!$('#list')) return;
 
     $('#sub').textContent = orgs.length
       ? `${orgs.length} байгууллага олдлоо`

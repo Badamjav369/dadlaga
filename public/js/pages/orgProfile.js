@@ -1,10 +1,3 @@
-// =====================================================
-//  pages/orgProfile.js — байгууллагын мэдээлэл
-//
-//  Гурван таб: дадлагын чиглэл / байгууллагын мэдээлэл / нууц үг.
-//  Статистик хавтан нь табаас дээр — үргэлж харагдана.
-// =====================================================
-
 import { api, upload, Auth } from '../core/api.js';
 import { $, $$, lock, unlock, initial, esc } from '../core/dom.js';
 import { field, alertBox, showAlert, hideAlert, toast, tiles, skeletonRows, viewHead } from '../components/ui.js';
@@ -112,8 +105,6 @@ export default {
   }
 };
 
-
-/* -------- Ачаалах -------- */
 async function load() {
   try {
     const { profile, positions, totals } = await api('/organizations/me');
@@ -146,7 +137,6 @@ async function fill(p) {
     .forEach(k => { const el = $('#' + k); if (el) el.value = p[k]; });
   $('#website').value = p.website || '';
 
-  // Жагсаалтыг татаад одоогийн утгыг сонгоно
   try {
     const { industries, locations } = await lookups();
     fillSelect($('#industry_id'), industries, p.industry_id);
@@ -156,8 +146,6 @@ async function fill(p) {
   }
 }
 
-
-/* -------- Лого -------- */
 function renderLogo(p) {
   $('#logoFrame').innerHTML = p.logo
     ? `<img src="${esc(p.logo)}" alt="${esc(p.name)}">`
@@ -206,8 +194,6 @@ async function dropLogo() {
   }
 }
 
-
-/* -------- Чиглэл -------- */
 async function togglePosition(btn) {
   lock(btn, '…');
 
@@ -272,8 +258,6 @@ async function addPosition(e) {
   }
 }
 
-
-/* -------- Профайл -------- */
 async function saveProfile(e) {
   e.preventDefault();
   const form = e.target;

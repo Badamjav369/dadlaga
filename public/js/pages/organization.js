@@ -1,7 +1,3 @@
-// =====================================================
-//  pages/organization.js — дэлгэрэнгүй + хүсэлт илгээх
-// =====================================================
-
 import { api } from '../core/api.js';
 import { $, $$, html, raw, esc, lock, unlock } from '../core/dom.js';
 import { blank, skeletonHero, skeletonRows, toast } from '../components/ui.js';
@@ -24,7 +20,6 @@ export default {
 
   mount() { return load(); }
 };
-
 
 async function load() {
   const box = $('#content');
@@ -62,7 +57,6 @@ async function load() {
   }
 }
 
-
 function positionList(positions) {
   if (!positions.length) {
     return blank({
@@ -79,7 +73,6 @@ function positionList(positions) {
     </div>
     ${raw(positions.map(positionRow).join(''))}`;
 }
-
 
 async function apply(btn, positionId) {
   lock(btn, 'Илгээж байна…');

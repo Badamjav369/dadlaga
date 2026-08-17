@@ -1,7 +1,3 @@
-// =====================================================
-//  core/api.js — сервертэй харилцах давхарга
-// =====================================================
-
 const TOKEN_KEY = 'dadlaga.token';
 const USER_KEY  = 'dadlaga.user';
 
@@ -29,13 +25,8 @@ export const Auth = {
   }
 };
 
-/** Дүр бүрийн эхлэх хуудас */
 export const homeFor = role => role === 'student' ? '#/organizations' : '#/org/requests';
 
-/**
- * Сервер рүү JSON хүсэлт илгээх.
- * Амжилтгүй бол { status, message, errors } объект шиднэ.
- */
 export async function api(path, { method = 'GET', body } = {}) {
   const headers = { 'Content-Type': 'application/json' };
   const token   = Auth.token();
@@ -55,7 +46,6 @@ export async function api(path, { method = 'GET', body } = {}) {
   const data = await res.json().catch(() => ({}));
 
   if (!res.ok) {
-    // Токен хүчингүй болсон бол сесс цэвэрлээд нэвтрэх хуудас руу
     if (res.status === 401 && token) {
       Auth.clear();
       location.hash = '#/login';
@@ -70,7 +60,6 @@ export async function api(path, { method = 'GET', body } = {}) {
   return data;
 }
 
-/** Файл илгээх — FormData ашиглана, JSON биш */
 export async function upload(path, formData) {
   const res = await fetch('/api' + path, {
     method : 'POST',

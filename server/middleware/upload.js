@@ -1,14 +1,6 @@
-// =====================================================
-//  middleware/upload.js
-//  Байгууллагын лого байршуулах тохиргоо (multer)
-// =====================================================
-
 const multer = require('multer');
 const path   = require('path');
 const fs     = require('fs');
-
-// Зургууд public/uploads/logos дотор хадгалагдана.
-// public/ хавтас нь статикаар түгээгддэг тул браузер шууд харна.
 const DIR = path.join(__dirname, '..', '..', 'public', 'uploads', 'logos');
 fs.mkdirSync(DIR, { recursive: true });
 
@@ -20,7 +12,6 @@ const storage = multer.diskStorage({
   }
 });
 
-// SVG-г зөвшөөрөхгүй — дотор нь скрипт нуугдах боломжтой
 const ALLOWED = ['image/png', 'image/jpeg', 'image/webp'];
 
 const upload = multer({
@@ -34,10 +25,6 @@ const upload = multer({
   }
 });
 
-/**
- * multer-ийн алдааг JSON болгож буцаана.
- * Ингэснээр frontend ижил хэлбэрээр алдааг уншина.
- */
 function uploadLogo(req, res, next) {
   upload.single('logo')(req, res, err => {
     if (!err) return next();
@@ -50,7 +37,6 @@ function uploadLogo(req, res, next) {
   });
 }
 
-/** Хуучин файлыг устгах — алдаа гарвал чимээгүй өнгөрнө */
 function removeFile(webPath) {
   if (!webPath) return;
   const full = path.join(__dirname, '..', '..', 'public', webPath);

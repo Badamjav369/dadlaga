@@ -1,8 +1,3 @@
-// =====================================================
-//  db.js — MySQL холболтын pool
-//  Тохиргоо config.js-ээс ирнэ (шалгагдсан утгууд)
-// =====================================================
-
 const mysql = require('mysql2/promise');
 const { DB } = require('./config');
 
@@ -21,8 +16,6 @@ const pool = mysql.createPool({
   dateStrings: true,
   timezone   : '+08:00',
 
-  // Олон командыг нэг мөрөнд явуулахыг хориглоно.
-  // SQL тарилга амжилттай болсон ч нэмэлт команд залгах боломжгүй.
   multipleStatements: false
 });
 

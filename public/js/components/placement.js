@@ -1,14 +1,3 @@
-// =====================================================
-//  components/placement.js — оюутны дадлагын хүсэлтүүд
-//
-//  Хүсэлт бүрийг тасалбар хэлбэрээр харуулна.
-//  Тасалбарын өнгө нь төлөвөөс хамаарна:
-//    Илгээсэн     — саарал хар, хүлээж буй
-//    Хүлээн авсан — шаргал, судалгаанд орсон
-//    Тэнцсэн      — ногоон, дараагийн алхам нээгдэнэ
-//    Тэнцээгүй    — цайвар, бүдэгрүүлж хойш тавина
-// =====================================================
-
 import { html, raw, day, esc } from '../core/dom.js';
 import { blank, tiles } from './ui.js';
 
@@ -24,7 +13,6 @@ const EYE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 const CROSS = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
   stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>`;
 
-/** Төлөв бүрийн харагдах байдал ба явцын алхмууд */
 const LOOK = {
   'Илгээсэн': {
     state: 'wait', icon: CLOCK, label: 'Хариу хүлээж байна',
@@ -46,8 +34,6 @@ const LOOK = {
 
 const STEP_NAMES = ['Хүсэлт илгээсэн', 'Байгууллага үзсэн', 'Эцсийн шийдвэр'];
 
-
-/** Гурван цэгээр илэрхийлсэн явц */
 function steps(marks) {
   const parts = [];
 
@@ -70,13 +56,9 @@ function steps(marks) {
           </div>`;
 }
 
-
-/** Нэг хүсэлтийн тасалбар */
 export function placement(r) {
   const look = LOOK[r.status] || LOOK['Илгээсэн'];
 
-  // Холбоо барих мэдээллийг байгууллага үзсэний дараа л нээнэ.
-  // Тэнцээгүй бол хэрэггүй.
   const showContact = r.status === 'Хүлээн авсан' || r.status === 'Тэнцсэн';
 
   return html`
@@ -113,11 +95,6 @@ export function placement(r) {
     </div>`;
 }
 
-
-/**
- * Профайл дээрх бүхэл блок.
- * Бүх хүсэлтийг харуулна — чухлаас нь эхэлж эрэмбэлнэ.
- */
 export function placementBlock(requests) {
   if (!requests.length) {
     return blank({
@@ -128,8 +105,6 @@ export function placementBlock(requests) {
     });
   }
 
-  // Тэнцсэн нь хамгийн чухал, тэнцээгүй нь хамгийн сүүлд.
-  // Ижил төлөвтэй бол шинэ нь дээр.
   const rank = { 'Тэнцсэн': 0, 'Хүлээн авсан': 1, 'Илгээсэн': 2, 'Тэнцээгүй': 3 };
   const list = [...requests].sort((a, b) =>
     (rank[a.status] - rank[b.status]) ||

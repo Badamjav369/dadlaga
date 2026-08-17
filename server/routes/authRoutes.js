@@ -1,7 +1,4 @@
-// =====================================================
 //  routes/auth.js — бүртгүүлэх / нэвтрэх
-// =====================================================
-
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
@@ -9,13 +6,12 @@ const pool   = require('../db');
 const { signToken, requireAuth } = require('../middleware/authGuard');
 const { BASE_URL, SHOW_RESET_LINK } = require('../config');
 
-const RESET_MINUTES = 30;   // токен хэдэн минут хүчинтэй байх
+const RESET_MINUTES = 30;
 
 const sha256 = v => crypto.createHash('sha256').update(v).digest('hex');
 
 const isPhone = v => /^[689]\d{7}$/.test(v);
 
-/** Лавлах хүснэгтэд id байгаа эсэхийг шалгана */
 async function lookupExists(table, idCol, id) {
   if (!Number(id)) return false;
   const [[row]] = await pool.query(
@@ -25,9 +21,7 @@ async function lookupExists(table, idCol, id) {
 const isEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
 
 
-// -----------------------------------------------------
 //  POST /api/auth/register/student
-// -----------------------------------------------------
 router.post('/register/student', async (req, res, next) => {
   try {
     const { last_name, first_name, username, password,
@@ -78,9 +72,7 @@ router.post('/register/student', async (req, res, next) => {
 });
 
 
-// -----------------------------------------------------
 //  POST /api/auth/register/org
-// -----------------------------------------------------
 router.post('/register/org', async (req, res, next) => {
   try {
     const { name, username, password, email, phone,
@@ -93,8 +85,6 @@ router.post('/register/org', async (req, res, next) => {
     if (!isPhone(phone || '')) errors.phone  = '8 оронтой дугаар оруулна уу.';
     if ((password || '').length < 6) errors.password = 'Нууц үг дор хаяж 6 тэмдэгт байна.';
 
-    // Салбар, байршил нь лавлах хүснэгтэд байх ёстой.
-    // Чөлөөт текст хүлээж авахгүй — давхардал үүсэх боломжгүй.
     if (!await lookupExists('industries', 'industry_id', industry_id)) {
       errors.industry_id = 'Үйл ажиллагааны чиглэлээ сонгоно уу.';
     }
@@ -135,10 +125,7 @@ router.post('/register/org', async (req, res, next) => {
   }
 });
 
-
-// -----------------------------------------------------
 //  POST /api/auth/login   { username, password, role }
-// -----------------------------------------------------
 router.post('/login', async (req, res, next) => {
   try {
     const { username, password, role } = req.body;
@@ -168,8 +155,6 @@ router.post('/login', async (req, res, next) => {
       name = row?.name;
     }
 
-    // Бүртгэл байхгүй ба нууц үг буруу тохиолдолд ижил хариу өгнө —
-    // ингэснээр аль нэр бүртгэлтэйг таах боломжгүй болно
     if (!row || !(await bcrypt.compare(password, row.password))) {
       return res.status(401).json({ message: 'Нэвтрэх нэр эсвэл нууц үг буруу байна.' });
     }
@@ -179,10 +164,7 @@ router.post('/login', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-
-// -----------------------------------------------------
 //  GET /api/auth/me — токеноор одоогийн хэрэглэгчийг авах
-// -----------------------------------------------------
 router.get('/me', requireAuth, async (req, res, next) => {
   try {
     const { id, role } = req.user;
@@ -209,11 +191,8 @@ router.get('/me', requireAuth, async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-
-// -----------------------------------------------------
 //  POST /api/auth/change-password — нэвтэрсэн үедээ солих
 //  body: { current_password, new_password }
-// -----------------------------------------------------
 router.post('/change-password', requireAuth, async (req, res, next) => {
   try {
     const { current_password, new_password } = req.body;
@@ -249,14 +228,7 @@ router.post('/change-password', requireAuth, async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-
-// -----------------------------------------------------
 //  POST /api/auth/forgot — сэргээх холбоос үүсгэх
-//  body: { username, role }
-//
-//  Жинхэнэ системд энэ холбоосыг и-мэйлээр илгээнэ.
-//  Энд и-мэйл сервер байхгүй тул серверийн консол дээр хэвлэнэ.
-// -----------------------------------------------------
 router.post('/forgot', async (req, res, next) => {
   try {
     const { username, role } = req.body;
@@ -273,15 +245,12 @@ router.post('/forgot', async (req, res, next) => {
       [username.trim()]
     );
 
-    // Бүртгэл олдсон эсэхээс үл хамааран ижил хариу буцаана —
-    // ингэснээр аль нэр бүртгэлтэйг таах боломжгүй болно
     const generic = {
       message: 'Хэрэв ийм бүртгэл байгаа бол сэргээх холбоосыг и-мэйлээр илгээлээ.'
     };
 
     if (!user) return res.json(generic);
 
-    // Хуучин ашиглагдаагүй токенуудыг хүчингүй болгоно
     await pool.query(
       `UPDATE password_resets SET used_at = NOW()
        WHERE role = ? AND user_id = ? AND used_at IS NULL`,
@@ -304,9 +273,6 @@ router.post('/forgot', async (req, res, next) => {
     console.log('  Линк:', link);
     console.log(`  Хүчинтэй: ${RESET_MINUTES} минут`);
     console.log('──────────────────────────────────────────────\n');
-
-    // Хөгжүүлэлтийн үед л линкийг буцаана. Бодит орчинд
-    // config.js энэ тохиргоог зөвшөөрөхгүй.
     if (SHOW_RESET_LINK) {
       return res.json({ ...generic, dev_link: link });
     }
@@ -316,10 +282,7 @@ router.post('/forgot', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-
-// -----------------------------------------------------
 //  GET /api/auth/reset/:token — токен хүчинтэй эсэхийг шалгах
-// -----------------------------------------------------
 router.get('/reset/:token', async (req, res, next) => {
   try {
     const [[row]] = await pool.query(
@@ -339,11 +302,7 @@ router.get('/reset/:token', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-
-// -----------------------------------------------------
 //  POST /api/auth/reset — шинэ нууц үг тавих
-//  body: { token, password }
-// -----------------------------------------------------
 router.post('/reset', async (req, res, next) => {
   const conn = await pool.getConnection();
 
@@ -394,6 +353,5 @@ router.post('/reset', async (req, res, next) => {
     conn.release();
   }
 });
-
 
 module.exports = router;
