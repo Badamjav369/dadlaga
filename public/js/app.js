@@ -12,7 +12,6 @@ import forgot        from './pages/forgot.js';
 import reset         from './pages/reset.js';
 import organizations from './pages/organizations.js';
 import organization  from './pages/organization.js';
-import redirectRequests from './pages/redirectRequests.js';
 import profile       from './pages/profile.js';
 import orgRequests   from './pages/orgRequests.js';
 import orgProfile    from './pages/orgProfile.js';
@@ -27,7 +26,6 @@ defineRoutes([
   // Оюутан
   { path: '/organizations',     page: organizations },
   { path: '/organizations/:id', page: organization },
-  { path: '/requests',          page: redirectRequests },   // хуучин хаяг
   { path: '/profile',           page: profile },
 
   // Байгууллага
