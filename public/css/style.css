@@ -1,0 +1,1467 @@
+/* =====================================================
+   Дадлага.мн — загварын систем
+   ─────────────────────────────────────────────────────
+   1. Токен       2. Суурь        3. Нэвтрэх хуудас
+   4. Топбар      5. Хэсгүүд      6. Талбар & товч
+   7. Карт        8. Дадлагын үнэмлэх    9. Харанхуй горим
+   ===================================================== */
+
+/* ══════════════════════════════════════════
+   1. ТОКЕН
+   ══════════════════════════════════════════ */
+:root{
+  /* Гадаргуу */
+  --ink:        #0D1420;
+  --paper:      #EEF1F5;
+  --card:       #FFFFFF;
+  --line:       #DFE5EC;
+  --line-soft:  #EAEEF3;
+  --text:       #0D1420;
+  --muted:      #5F6E82;
+  --faint:      #93A0B0;
+  --danger:     #C0392B;
+  --success:    #1D6B42;
+
+  /* Онцлох өнгө — оюутан */
+  --accent:     #2B5FD9;
+  --accent-ink: #FFFFFF;
+  --accent-soft:#E4EBFC;
+  --glow:       rgba(43,95,217,.42);
+
+  /* Хэмжээ */
+  --r-xs: 8px;
+  --r-sm: 11px;
+  --r:    14px;
+  --r-lg: 20px;
+
+  /* Сүүдэр */
+  --sh-1: 0 1px 2px rgba(13,20,32,.05);
+  --sh-2: 0 4px 16px rgba(13,20,32,.07);
+  --sh-3: 0 14px 38px rgba(13,20,32,.13);
+
+  /* Хөдөлгөөн */
+  --ease: cubic-bezier(.4,0,.2,1);
+}
+
+/* Онцлох өнгө — байгууллага */
+body[data-role="org"]{
+  --accent:     #B87613;
+  --accent-soft:#FAF0DA;
+  --glow:       rgba(184,118,19,.42);
+}
+
+
+/* ══════════════════════════════════════════
+   2. СУУРЬ
+   ══════════════════════════════════════════ */
+*,*::before,*::after{ box-sizing:border-box; }
+[hidden]{ display:none !important; }
+
+html,body{ margin:0; padding:0; }
+
+body{
+  font-family:'Manrope', system-ui, -apple-system, sans-serif;
+  font-size:15px;
+  line-height:1.55;
+  background:var(--paper);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+h1,h2,h3,h4{ margin:0; line-height:1.25; letter-spacing:-.02em; }
+p{ margin:0; }
+a{ color:inherit; }
+
+:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+  border-radius:4px;
+}
+
+/* Тоо, шошго, кодод хэрэглэх утилит фонт */
+.mono{
+  font-family:'JetBrains Mono', ui-monospace, monospace;
+  font-size:10px;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+
+.brand{
+  font-family:'Unbounded', sans-serif;
+  font-weight:800;
+  letter-spacing:-.03em;
+  text-decoration:none;
+  color:inherit;
+  white-space:nowrap;
+}
+.brand span{ color:var(--accent); transition:color .4s var(--ease); }
+
+.display{
+  font-family:'Unbounded', sans-serif;
+  font-weight:600;
+  letter-spacing:-.035em;
+}
+
+
+/* ══════════════════════════════════════════
+   3. НЭВТРЭХ ХУУДАС
+   ══════════════════════════════════════════ */
+.auth{
+  display:grid;
+  grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
+  min-height:100vh;
+  min-height:100dvh;
+}
+
+.auth-stage{
+  position:relative;
+  overflow:hidden;
+  background:var(--ink);
+  color:#fff;
+  padding:46px 44px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  gap:44px;
+}
+.auth-stage::after{
+  content:"";
+  position:absolute;
+  left:-28%; right:-28%; bottom:-48%;
+  height:82%;
+  background:radial-gradient(50% 55% at 50% 100%, var(--glow), transparent 72%);
+  transition:background .5s var(--ease);
+  pointer-events:none;
+}
+.auth-stage > *{ position:relative; z-index:1; }
+.auth-stage .brand{ font-size:19px; }
+
+.stage-eyebrow{
+  color:var(--accent);
+  margin-bottom:15px;
+  transition:color .4s var(--ease);
+}
+
+.stage-thesis{
+  font-family:'Unbounded', sans-serif;
+  font-weight:400;
+  font-size:clamp(27px, 2.9vw, 41px);
+  line-height:1.18;
+  letter-spacing:-.03em;
+  margin-bottom:42px;
+  max-width:13ch;
+}
+
+/* Дадлагын замын алхмууд — дараалал утга агуулдаг тул дугаарлав */
+.track{ list-style:none; margin:0; padding:0; display:grid; gap:21px; max-width:360px; }
+.track li{ display:grid; grid-template-columns:auto 1fr; gap:15px; align-items:start; }
+.track-num{
+  font-family:'JetBrains Mono', monospace;
+  font-size:10px;
+  color:var(--accent);
+  border:1px solid rgba(255,255,255,.17);
+  border-radius:999px;
+  padding:5px 9px;
+  transition:color .4s var(--ease);
+}
+.track h3{ font-size:14.5px; font-weight:600; margin-bottom:3px; }
+.track p{ font-size:13px; line-height:1.55; color:rgba(255,255,255,.58); }
+
+.stage-foot{ font-size:12px; color:rgba(255,255,255,.38); }
+
+.auth-panel{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:52px 30px;
+}
+.auth-card{ width:100%; max-width:470px; }
+
+.card-head{ margin-bottom:24px; }
+.card-head h1{ font-family:'Unbounded', sans-serif; font-weight:600; font-size:28px; margin-bottom:7px; }
+.card-head p{ font-size:14.5px; color:var(--muted); }
+
+/* Дүр сонгогч */
+.roles{
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:6px;
+  margin-bottom:22px;
+  box-shadow:var(--sh-1);
+}
+.roles-thumb{
+  position:absolute;
+  top:6px; bottom:6px; left:6px;
+  width:calc(50% - 6px);
+  background:var(--accent);
+  border-radius:11px;
+  transition:transform .4s var(--ease), background-color .4s var(--ease);
+}
+body[data-role="org"] .roles-thumb{ transform:translateX(100%); }
+
+.role{
+  position:relative;
+  z-index:1;
+  font:inherit;
+  font-weight:600;
+  font-size:14.5px;
+  text-align:left;
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  padding:11px 15px;
+  border-radius:11px;
+  cursor:pointer;
+  display:grid;
+  gap:3px;
+  transition:color .3s var(--ease);
+}
+.role .mono{ font-size:9px; opacity:.6; }
+.role[aria-pressed="true"]{ color:var(--accent-ink); }
+
+
+/* ══════════════════════════════════════════
+   4. ТОПБАР
+   ══════════════════════════════════════════ */
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:30;
+  background:color-mix(in srgb, var(--card) 88%, transparent);
+  backdrop-filter:saturate(180%) blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.topbar-inner{
+  max-width:1140px;
+  margin:0 auto;
+  padding:0 26px;
+  height:64px;
+  display:flex;
+  align-items:center;
+  gap:28px;
+}
+.topbar .brand{ font-size:15px; }
+
+.tabs-nav{ display:flex; gap:3px; flex:1; overflow-x:auto; scrollbar-width:none; }
+.tabs-nav::-webkit-scrollbar{ display:none; }
+
+.tab-link{
+  position:relative;
+  font-size:14px;
+  font-weight:600;
+  color:var(--muted);
+  text-decoration:none;
+  padding:9px 14px;
+  border-radius:var(--r-sm);
+  white-space:nowrap;
+  transition:color .2s var(--ease), background-color .2s var(--ease);
+}
+.tab-link:hover{ color:var(--text); background:var(--paper); }
+.tab-link[aria-current="page"]{ color:var(--accent); background:var(--accent-soft); }
+
+.topbar-user{ display:flex; align-items:center; gap:11px; }
+.who{
+  display:grid;
+  text-align:right;
+  line-height:1.25;
+  max-width:190px;
+}
+.who b{ font-size:13px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.who span{ font-size:11px; color:var(--faint); }
+
+.icon-btn{
+  display:inline-grid;
+  place-items:center;
+  width:37px; height:37px;
+  padding:0;
+  border:1px solid var(--line);
+  border-radius:var(--r-sm);
+  background:transparent;
+  color:var(--muted);
+  cursor:pointer;
+  flex-shrink:0;
+  transition:color .2s var(--ease), border-color .2s var(--ease);
+}
+.icon-btn:hover{ color:var(--accent); border-color:var(--accent); }
+.icon-btn svg{ width:17px; height:17px; }
+.icon-btn.danger:hover{ color:var(--danger); border-color:var(--danger); }
+
+.theme-fab{
+  position:fixed;
+  top:18px; right:18px;
+  z-index:40;
+  background:var(--card);
+  box-shadow:var(--sh-2);
+}
+html[data-theme="light"] .i-sun { display:none; }
+html[data-theme="dark"]  .i-moon{ display:none; }
+
+
+/* ══════════════════════════════════════════
+   5. ХЭСГҮҮД
+   ══════════════════════════════════════════ */
+.view{ max-width:1140px; margin:0 auto; padding:38px 26px 96px; }
+.view-narrow{ max-width:780px; }
+
+.view-head{ margin-bottom:26px; }
+.view-head h1{ font-family:'Unbounded', sans-serif; font-weight:600; font-size:28px; margin-bottom:7px; }
+.view-head p{ font-size:14.5px; color:var(--muted); max-width:62ch; }
+
+.crumb{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:13.5px;
+  font-weight:600;
+  color:var(--muted);
+  text-decoration:none;
+  margin-bottom:18px;
+}
+.crumb:hover{ color:var(--accent); }
+
+.section-title{
+  display:flex;
+  align-items:baseline;
+  gap:11px;
+  margin:34px 0 14px;
+}
+.section-title h2{ font-size:17px; font-weight:700; }
+.section-title .mono{ color:var(--faint); }
+
+.panel{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  padding:26px;
+  margin-bottom:18px;
+  box-shadow:var(--sh-1);
+}
+.panel > h2{ font-size:17px; font-weight:700; margin-bottom:5px; }
+.panel > .panel-sub{ font-size:13.5px; color:var(--muted); margin-bottom:22px; }
+
+
+
+/* Статистик хавтан */
+.tiles{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(118px, 1fr));
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  margin-bottom:20px;
+}
+.tile{ background:var(--card); padding:19px 21px; }
+.tile b{
+  display:block;
+  font-family:'Unbounded', sans-serif;
+  font-weight:600;
+  font-size:25px;
+  letter-spacing:-.035em;
+  line-height:1;
+  margin-bottom:7px;
+}
+.tile .mono{ color:var(--muted); display:block; }
+
+/* Дэд таб — урт хуудсыг хэсэгт хуваана */
+.seg{
+  display:flex;
+  gap:4px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:5px;
+  margin-bottom:24px;
+  max-width:100%;
+  overflow-x:auto;
+  scrollbar-width:none;
+  box-shadow:var(--sh-1);
+}
+.seg::-webkit-scrollbar{ display:none; }
+
+.seg-btn{
+  font:inherit;
+  font-size:13.5px;
+  font-weight:600;
+  color:var(--muted);
+  background:transparent;
+  border:0;
+  border-radius:999px;
+  padding:10px 20px;
+  cursor:pointer;
+  white-space:nowrap;
+  flex-shrink:0;
+  transition:color .2s var(--ease), background-color .25s var(--ease);
+}
+.seg-btn:hover{ color:var(--text); }
+.seg-btn[aria-selected="true"]{
+  background:var(--accent);
+  color:var(--accent-ink);
+}
+
+/* Өргөн дэлгэцэнд бүтэн нэр, нарийнд богино нэр.
+   Дэд таб болон талбарын шошгонд ижил зарчмаар ажиллана. */
+.seg-short,
+.lbl-short{ display:none; }
+
+/* Шүүх табууд */
+.chips{ display:flex; gap:7px; margin-bottom:22px; overflow-x:auto; padding-bottom:3px; scrollbar-width:none; }
+.chips::-webkit-scrollbar{ display:none; }
+.chip{
+  font:inherit;
+  font-size:13.5px;
+  font-weight:600;
+  color:var(--muted);
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:9px 17px;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:all .2s var(--ease);
+}
+.chip:hover{ color:var(--text); }
+.chip[aria-pressed="true"]{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:var(--accent-ink);
+}
+
+/* Хоосон ба ачаалж буй төлөв */
+.blank{
+  background:var(--card);
+  border:1px dashed var(--line);
+  border-radius:var(--r-lg);
+  padding:52px 26px;
+  text-align:center;
+}
+.blank h3{ font-size:16.5px; font-weight:700; margin-bottom:7px; }
+.blank p{ font-size:14px; color:var(--muted); margin-bottom:18px; }
+
+.skeleton{
+  border-radius:var(--r);
+  background:linear-gradient(90deg, var(--line-soft) 25%, var(--line) 37%, var(--line-soft) 63%);
+  background-size:400% 100%;
+  animation:shimmer 1.3s linear infinite;
+}
+@keyframes shimmer{ from{ background-position:100% 0 } to{ background-position:-100% 0 } }
+.skeleton-row{ height:92px; margin-bottom:12px; }
+
+
+/* ══════════════════════════════════════════
+   6. ТАЛБАР & ТОВЧ
+   ══════════════════════════════════════════ */
+.field{ display:grid; gap:7px; margin-bottom:16px; }
+/* Шошго энгийн үсгээр. Моно фонт, тэлсэн зай нь богино
+   үгэнд гоё ч "ҮЙЛ АЖИЛЛАГААНЫ ЧИГЛЭЛ" гэхэд уншихад хүнд. */
+.field label{
+  color:var(--muted);
+  font-size:12.5px;
+  font-weight:600;
+  letter-spacing:0;
+}
+.field input,
+.field select,
+.field textarea{
+  font:inherit;
+  font-size:15px;
+  width:100%;
+  padding:12px 15px;
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  background:var(--card);
+  color:var(--text);
+  transition:border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+.field input::placeholder{ color:var(--faint); }
+.field input:focus,
+.field select:focus{
+  outline:none;
+  border-color:var(--accent);
+  box-shadow:0 0 0 3.5px var(--accent-soft);
+}
+.field input:disabled{ background:var(--paper); color:var(--muted); }
+.field.bad input, .field.bad select{ border-color:var(--danger); }
+
+.err{ font-size:12.5px; color:var(--danger); }
+.err:empty{ display:none; }
+
+.pair{ display:grid; grid-template-columns:1fr 1fr; gap:0 15px; }
+
+.pw{ position:relative; }
+.pw input{ padding-right:66px; }
+.pw-eye{
+  position:absolute; right:6px; top:50%;
+  transform:translateY(-50%);
+  font:inherit; font-size:12px; font-weight:600;
+  border:0; background:transparent; color:var(--accent);
+  padding:8px 11px; border-radius:var(--r-xs); cursor:pointer;
+}
+
+.check{ display:flex; align-items:center; gap:9px; font-size:13.5px; color:var(--muted); cursor:pointer; }
+.check input{ accent-color:var(--accent); width:16px; height:16px; }
+
+.spread{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin:6px 0 22px; }
+
+.link{ color:var(--accent); font-weight:600; text-decoration:none; }
+.link:hover{ text-decoration:underline; }
+.link-soft{ color:var(--muted); font-size:13.5px; text-decoration:none; }
+.link-soft:hover{ color:var(--accent); }
+
+.btn{
+  width:100%;
+  font:inherit;
+  font-weight:700;
+  font-size:15px;
+  color:var(--accent-ink);
+  background:var(--accent);
+  border:1px solid transparent;
+  border-radius:var(--r);
+  padding:14px;
+  margin-top:20px;
+  cursor:pointer;
+  transition:background-color .3s var(--ease), transform .1s var(--ease), opacity .2s var(--ease);
+}
+.btn:hover{ opacity:.9; }
+.btn:active{ transform:translateY(1px); }
+.btn:disabled{ opacity:.5; cursor:not-allowed; }
+
+.btn.sm{ width:auto; margin-top:0; padding:9px 16px; font-size:13.5px; border-radius:var(--r-sm); }
+.btn.ghost{ background:transparent; color:var(--muted); border-color:var(--line); }
+.btn.ghost:hover{ color:var(--text); border-color:var(--muted); opacity:1; }
+.btn.pass{ background:var(--success); color:#fff; }
+.btn.warn{ background:var(--danger); }
+
+.file-btn{ position:relative; overflow:hidden; display:inline-block; }
+.file-btn input[type="file"]{ position:absolute; inset:0; opacity:0; cursor:pointer; font-size:0; }
+
+.note{ margin-top:22px; text-align:center; font-size:14px; color:var(--muted); }
+
+.alert{ font-size:13.5px; line-height:1.55; padding:13px 15px; border-radius:var(--r); margin-bottom:18px; border:1px solid; }
+.alert.bad { background:#FDECEA; border-color:#F2C4BF; color:#8E2A20; }
+.alert.good{ background:#E7F6EE; border-color:#BEE3CE; color:#1D6B42; }
+
+.toast{
+  position:fixed; left:50%; bottom:30px;
+  transform:translateX(-50%);
+  background:var(--ink); color:#fff;
+  font-size:14px; font-weight:500;
+  padding:13px 23px; border-radius:var(--r);
+  box-shadow:var(--sh-3);
+  z-index:60; max-width:90vw; text-align:center;
+  animation:rise .25s var(--ease);
+}
+.toast.bad{ background:var(--danger); }
+@keyframes rise{ from{ opacity:0; transform:translate(-50%, 12px) } }
+
+
+/* ══════════════════════════════════════════
+   7. КАРТ
+   ══════════════════════════════════════════ */
+.grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(286px,1fr)); gap:17px; }
+
+.org-card{
+  display:block;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  padding:22px;
+  text-decoration:none;
+  color:inherit;
+  box-shadow:var(--sh-1);
+  transition:border-color .2s var(--ease), transform .18s var(--ease), box-shadow .2s var(--ease);
+}
+.org-card:hover{ border-color:var(--accent); transform:translateY(-3px); box-shadow:var(--sh-2); }
+
+.avatar{
+  width:46px; height:46px;
+  border-radius:13px;
+  background:var(--accent-soft);
+  color:var(--accent);
+  display:grid; place-items:center;
+  font-family:'Unbounded', sans-serif;
+  font-weight:600; font-size:18px;
+  overflow:hidden;
+  flex-shrink:0;
+  transition:background-color .4s var(--ease), color .4s var(--ease);
+}
+.avatar img{ width:100%; height:100%; object-fit:cover; }
+.avatar.lg{ width:60px; height:60px; border-radius:16px; font-size:23px; }
+
+.org-card h3{ font-size:16px; font-weight:700; margin:15px 0 5px; }
+.org-card .meta{ font-size:13px; color:var(--muted); line-height:1.6; }
+
+.card-foot{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  margin-top:17px; padding-top:15px;
+  border-top:1px solid var(--line-soft);
+  font-size:12.5px; color:var(--muted);
+}
+.slots{ font-weight:700; color:var(--accent); transition:color .4s var(--ease); }
+.slots.none{ color:var(--faint); }
+
+.row{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  padding:19px 22px;
+  margin-bottom:12px;
+  box-shadow:var(--sh-1);
+}
+.row-in{ display:flex; align-items:flex-start; justify-content:space-between; gap:18px; flex-wrap:wrap; }
+.row h3{ font-size:15.5px; font-weight:700; margin-bottom:5px; }
+.row .meta{ font-size:13px; color:var(--muted); line-height:1.65; }
+.row-acts{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+
+.kv{ display:grid; gap:12px; }
+.kv > div .mono{ display:block; color:var(--faint); margin-bottom:3px; }
+.kv > div{ font-size:14.5px; }
+
+.badge{
+  display:inline-block;
+  font-family:'JetBrains Mono', monospace;
+  font-size:10.5px; letter-spacing:.06em; font-weight:500;
+  padding:5px 11px; border-radius:999px;
+  border:1px solid; white-space:nowrap;
+}
+.b-sent  { background:#EEF2FB; border-color:#C9D6F0; color:#2B4E9B; }
+.b-review{ background:#FCF3E0; border-color:#EBD5A4; color:#8A6414; }
+.b-pass  { background:#E7F6EE; border-color:#BEE3CE; color:#1D6B42; }
+.b-fail  { background:#FDECEA; border-color:#F2C4BF; color:#8E2A20; }
+
+.logo-row{ display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+.logo-frame{
+  width:86px; height:86px;
+  border-radius:18px;
+  border:1px solid var(--line);
+  background:var(--paper);
+  display:grid; place-items:center;
+  overflow:hidden; flex-shrink:0;
+}
+.logo-frame img{ width:100%; height:100%; object-fit:cover; }
+.logo-frame b{ font-family:'Unbounded', sans-serif; font-weight:600; font-size:30px; color:var(--accent); }
+.logo-acts{ display:flex; gap:9px; flex-wrap:wrap; align-items:center; }
+.logo-acts p{ width:100%; font-size:12.5px; color:var(--muted); }
+
+
+/* ══════════════════════════════════════════
+   8. ДАДЛАГЫН ҮНЭМЛЭХ
+   Оюутны профайл дээрх гол элемент.
+   Хоёр хэсэгтэй — үнэмлэх ба таслагдах хэсэг.
+   ══════════════════════════════════════════ */
+.placement{
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr 218px;
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  margin-bottom:14px;
+  box-shadow:var(--sh-2);
+  background:var(--card);
+  border:1px solid var(--line);
+}
+.placement[data-state="pass"],
+.placement[data-state="review"]{ border-color:transparent; }
+
+/* Тэнцсэн — ногоон, хамгийн тод */
+.placement[data-state="pass"] .pl-main{
+  background:linear-gradient(148deg, #17694A 0%, #0C3A26 100%);
+}
+.placement[data-state="pass"] .pl-stub{ --stub:#0A3222; }
+
+/* Хүлээн авсан — шаргал, судалгаанд орсныг илэрхийлнэ */
+.placement[data-state="review"] .pl-main{
+  background:linear-gradient(148deg, #4A3512 0%, #241906 100%);
+}
+.placement[data-state="review"] .pl-stub{ --stub:#1E1505; }
+
+/* Илгээсэн — саарал хар, төвшин хүлээлт */
+.placement[data-state="wait"] .pl-main{ background:var(--ink); }
+
+/* Тэнцээгүй — цайвар болгож хойш тавина.
+   Устгахгүй, гэхдээ нүд эхэлж энэ дээр буухгүй. */
+.placement[data-state="fail"]{ box-shadow:var(--sh-1); }
+.placement[data-state="fail"] .pl-main{ background:var(--card); color:var(--muted); }
+.placement[data-state="fail"] .pl-main::after{ display:none; }
+.placement[data-state="fail"] .pl-org{ color:var(--text); }
+.placement[data-state="fail"] .pl-pos{ color:var(--muted); }
+.placement[data-state="fail"] .pl-eyebrow{ border-color:var(--line); color:var(--danger); }
+.placement[data-state="fail"] .pl-stub{ --stub:var(--paper); }
+.placement[data-state="fail"] .pl-stub::before{
+  background-image:linear-gradient(var(--line) 52%, transparent 52%);
+}
+.placement[data-state="fail"] .pl-cell .mono{ color:var(--faint); }
+.placement[data-state="fail"] .pl-cell b{ color:var(--text); }
+.placement[data-state="fail"] .pl-dot{ border-color:var(--faint); }
+.placement[data-state="fail"] .pl-dot[data-on="done"]{ background:var(--faint); }
+.placement[data-state="fail"] .pl-dot[data-on="fail"]{ background:var(--danger); border-color:var(--danger); }
+.placement[data-state="fail"] .pl-bar{ background:var(--line); }
+.placement[data-state="fail"] .pl-bar[data-on="done"]{ background:var(--faint); }
+.placement[data-state="fail"] .pl-steps-label{ color:var(--muted); }
+
+.pl-main{
+  padding:28px 30px;
+  background:var(--ink);
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+}
+.pl-main::after{
+  content:"";
+  position:absolute;
+  right:-60px; top:-70px;
+  width:230px; height:230px;
+  border-radius:50%;
+  background:rgba(255,255,255,.045);
+  pointer-events:none;
+}
+
+.pl-eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:10px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  padding:6px 12px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.24);
+  margin-bottom:20px;
+}
+.pl-eyebrow svg{ width:13px; height:13px; }
+
+.pl-org{
+  display:inline-block;
+  font-family:'Unbounded', sans-serif;
+  font-weight:600;
+  font-size:23px;
+  letter-spacing:-.035em;
+  margin-bottom:7px;
+  color:inherit;
+  text-decoration:none;
+}
+.pl-org:hover{ text-decoration:underline; text-underline-offset:4px; }
+.pl-pos{ font-size:14.5px; color:rgba(255,255,255,.72); }
+
+/* Явцын гурван цэг — тасалбар бүрт багтана */
+.pl-steps{ display:flex; align-items:center; margin-top:22px; }
+.pl-dot{
+  width:9px; height:9px;
+  border-radius:50%;
+  border:1.6px solid rgba(255,255,255,.32);
+  flex-shrink:0;
+}
+.pl-dot[data-on="done"]{ background:#fff; border-color:#fff; }
+.pl-dot[data-on="now"] { border-color:#fff; box-shadow:0 0 0 3.5px rgba(255,255,255,.15); }
+.pl-dot[data-on="fail"]{ background:#F0776B; border-color:#F0776B; }
+.pl-bar{ width:26px; height:1.6px; background:rgba(255,255,255,.2); flex-shrink:0; }
+.pl-bar[data-on="done"]{ background:rgba(255,255,255,.7); }
+.pl-steps-label{
+  margin-left:14px;
+  font-size:12.5px;
+  color:rgba(255,255,255,.62);
+}
+
+.pl-contact{
+  margin-top:22px;
+  padding-top:18px;
+  border-top:1px solid rgba(255,255,255,.16);
+  font-size:13px;
+  color:rgba(255,255,255,.78);
+  line-height:1.7;
+}
+.pl-contact a{ color:#fff; }
+
+/* Таслагдах хэсэг — цоолсон захтай */
+.pl-stub{
+  --stub:rgba(0,0,0,.24);
+  position:relative;
+  padding:28px 26px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:20px;
+
+  /* Цоолборыг radial-gradient-ээр гаргана — хоёр өнцөгт хагас дугуй */
+  background:
+    radial-gradient(circle 9px at 0% 0%,   var(--paper) 99%, transparent 100%),
+    radial-gradient(circle 9px at 0% 100%, var(--paper) 99%, transparent 100%),
+    var(--stub);
+}
+/* Тасалбарын цоолсон шугам */
+.pl-stub::before{
+  content:"";
+  position:absolute;
+  left:0; top:0; bottom:0;
+  width:2px;
+  background-image:linear-gradient(rgba(255,255,255,.45) 52%, transparent 52%);
+  background-size:2px 11px;
+}
+.pl-cell .mono{ display:block; color:rgba(255,255,255,.5); margin-bottom:5px; }
+.pl-cell b{ font-size:15px; font-weight:600; color:#fff; }
+
+/* Явцын зурвас */
+.flow{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:10px;
+  margin-bottom:20px;
+}
+.flow-step{
+  padding:15px 17px;
+  border-radius:var(--r);
+  border:1px solid var(--line);
+  background:var(--card);
+  transition:all .3s var(--ease);
+}
+.flow-step .mono{ display:block; color:var(--faint); margin-bottom:6px; }
+.flow-step b{ font-size:13.5px; font-weight:700; color:var(--muted); }
+
+.flow-step[data-on="done"]{ border-color:var(--success); background:color-mix(in srgb, var(--success) 8%, var(--card)); }
+.flow-step[data-on="done"] b,
+.flow-step[data-on="done"] .mono{ color:var(--success); }
+
+.flow-step[data-on="now"]{ border-color:var(--accent); background:var(--accent-soft); box-shadow:var(--sh-1); }
+.flow-step[data-on="now"] b,
+.flow-step[data-on="now"] .mono{ color:var(--accent); }
+
+.flow-step[data-on="fail"]{ border-color:var(--danger); background:color-mix(in srgb, var(--danger) 8%, var(--card)); }
+.flow-step[data-on="fail"] b,
+.flow-step[data-on="fail"] .mono{ color:var(--danger); }
+
+
+/* ══════════════════════════════════════════
+   9. ХАРАНХУЙ ГОРИМ
+   ══════════════════════════════════════════ */
+html[data-theme="dark"]{
+  color-scheme:dark;
+
+  /* --ink нь --paper-аас илт бараан байх ёстой. Өмнө нь
+     #070B12 ба #0D131C хоёр бараг ижил байсан тул нэвтрэх
+     хуудасны хоёр хуваалт харанхуйд алга болдог байв. */
+  --ink:        #04070C;
+  --paper:      #121A27;
+  --card:       #1A2332;
+  --line:       #2B3644;
+  --line-soft:  #222C3A;
+  --text:       #E6EBF2;
+  --muted:      #8A97A8;
+  --faint:      #66748A;
+  --danger:     #F0776B;
+  --success:    #3E9C6B;
+  --sh-1: 0 1px 2px rgba(0,0,0,.3);
+  --sh-2: 0 4px 16px rgba(0,0,0,.36);
+  --sh-3: 0 14px 38px rgba(0,0,0,.5);
+}
+html[data-theme="dark"] body[data-role="student"]{
+  --accent:#6D9BF7; --accent-ink:#0B1220; --accent-soft:#18243D; --glow:rgba(109,155,247,.3);
+}
+html[data-theme="dark"] body[data-role="org"]{
+  --accent:#E0AC50; --accent-ink:#0B1220; --accent-soft:#2F2614; --glow:rgba(224,172,80,.28);
+}
+
+html[data-theme="dark"] .b-sent  { background:#16233B; border-color:#2B3E62; color:#9CB8F2; }
+html[data-theme="dark"] .b-review{ background:#2F2612; border-color:#564526; color:#E3C078; }
+html[data-theme="dark"] .b-pass  { background:#112E1E; border-color:#224C33; color:#7ACE9E; }
+html[data-theme="dark"] .b-fail  { background:#321A17; border-color:#5B2B25; color:#EF948A; }
+
+html[data-theme="dark"] .alert.bad { background:#2A1512; border-color:#5B2B25; color:#F2A79E; }
+html[data-theme="dark"] .alert.good{ background:#102A1C; border-color:#224C33; color:#8FD6AC; }
+html[data-theme="dark"] .toast{ background:var(--card); border:1px solid var(--line); }
+html[data-theme="dark"] .btn.pass{ color:#fff; }
+html[data-theme="dark"] .btn.ghost{ color:var(--muted); }
+
+
+/* ══════════════════════════════════════════
+   9б. БИЧГИЙН ШАТ
+   Гарчиг, дэд гарчиг, биет хоорондоо тод ялгаатай
+   байх ёстой. Өмнө нь 17 / 15.5 / 15 гэж хэт ойрхон
+   байсан тул нүд юу нь чухлыг ялгаж чаддаггүй байв.
+   ══════════════════════════════════════════ */
+.view-head h1,
+.card-head h1     { font-size:clamp(28px, 3.1vw, 33px); line-height:1.14; }
+.view-head p      { font-size:15px; margin-top:9px; }
+
+.section-title h2 { font-size:20px; letter-spacing:-.025em; }
+.panel > h2       { font-size:19px; letter-spacing:-.025em; margin-bottom:6px; }
+.panel > .panel-sub{ font-size:13.5px; }
+
+.org-card h3      { font-size:17px; line-height:1.3; }
+.org-card .meta   { font-size:13px; }
+.row h3           { font-size:16.5px; }
+.row .meta        { font-size:13.5px; }
+
+.kv > div         { font-size:15px; }
+.tile b           { font-size:27px; }
+
+/* Хэсгийн толгойд жижиг шошго нэмэгдэв */
+.view-head .mono{ display:block; color:var(--accent); margin-bottom:11px;
+                  transition:color .4s var(--ease); }
+
+
+/* ══════════════════════════════════════════
+   9в. ХАРАНХУЙ ТОЛГОЙ
+   Нэвтрэх хуудасны өнгө аястай холбоно.
+   Дотоод хуудсууд хэт цайвар байсныг зассан.
+   ══════════════════════════════════════════ */
+.hero{
+  position:relative;
+  overflow:hidden;
+  background:var(--ink);
+  color:#fff;
+  border-radius:var(--r-lg);
+  padding:32px 34px;
+  margin-bottom:20px;
+  box-shadow:var(--sh-2);
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  right:-14%; top:-58%;
+  width:62%; height:190%;
+  background:radial-gradient(50% 50% at 50% 50%, var(--glow), transparent 70%);
+  transition:background .5s var(--ease);
+  pointer-events:none;
+}
+.hero > *{ position:relative; z-index:1; }
+
+.hero-top{ display:flex; align-items:center; gap:18px; margin-bottom:22px; }
+
+.hero .mono{ color:rgba(255,255,255,.5); display:block; margin-bottom:7px; }
+.hero h1{
+  font-family:'Unbounded', sans-serif;
+  font-weight:600;
+  font-size:clamp(24px, 2.8vw, 30px);
+  letter-spacing:-.035em;
+}
+.hero-sub{ font-size:14.5px; color:rgba(255,255,255,.68); margin-top:8px; }
+
+.hero-facts{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px 32px;
+  padding-top:20px;
+  border-top:1px solid rgba(255,255,255,.15);
+}
+.hero-facts > div{ font-size:14px; color:rgba(255,255,255,.85); }
+.hero-facts .mono{ color:rgba(255,255,255,.42); margin-bottom:4px; }
+.hero-facts a{ color:#fff; }
+
+/* Харанхуй толгой дээрх аватар — цайвар хүрээтэй */
+.hero .avatar{ background:rgba(255,255,255,.11); color:#fff; }
+
+
+/* ══════════════════════════════════════════
+   9г. АВАТАРЫН ӨНГӨ
+   Нэрнээс тогтмол өнгө сонгоно. Жагсаалтад
+   20 байгууллага бүгд ижил цэнхэр байхаа болино.
+   ══════════════════════════════════════════ */
+.avatar{ background:var(--a-bg, var(--accent-soft)); color:var(--a-fg, var(--accent)); }
+
+.avatar[data-tone="0"]{ --a-bg:#E3EAFB; --a-fg:#2A57C4; }
+.avatar[data-tone="1"]{ --a-bg:#E1F0E7; --a-fg:#217A4C; }
+.avatar[data-tone="2"]{ --a-bg:#FAEADF; --a-fg:#A9551F; }
+.avatar[data-tone="3"]{ --a-bg:#EFE7F8; --a-fg:#6739AA; }
+.avatar[data-tone="4"]{ --a-bg:#DFEFF3; --a-fg:#166778; }
+.avatar[data-tone="5"]{ --a-bg:#F9E5EE; --a-fg:#A03464; }
+
+html[data-theme="dark"] .avatar[data-tone="0"]{ --a-bg:#1B2745; --a-fg:#8FAEF5; }
+html[data-theme="dark"] .avatar[data-tone="1"]{ --a-bg:#152C21; --a-fg:#79C79B; }
+html[data-theme="dark"] .avatar[data-tone="2"]{ --a-bg:#2E2118; --a-fg:#DDA279; }
+html[data-theme="dark"] .avatar[data-tone="3"]{ --a-bg:#251D38; --a-fg:#AF92E0; }
+html[data-theme="dark"] .avatar[data-tone="4"]{ --a-bg:#14282E; --a-fg:#79BACA; }
+html[data-theme="dark"] .avatar[data-tone="5"]{ --a-bg:#2D1A24; --a-fg:#DC8FB2; }
+
+/* Харанхуй толгой дээр өнгө хэрэглэхгүй — дэвсгэр аль хэдийн тод */
+.hero .avatar[data-tone]{ --a-bg:rgba(255,255,255,.11); --a-fg:#fff; }
+
+/* Зурвасын өнгө — аватарын өнгөтэй ижил */
+:root{
+  --t0:#2A57C4; --t1:#217A4C; --t2:#A9551F;
+  --t3:#6739AA; --t4:#166778; --t5:#A03464;
+}
+html[data-theme="dark"]{
+  --t0:#8FAEF5; --t1:#79C79B; --t2:#DDA279;
+  --t3:#AF92E0; --t4:#79BACA; --t5:#DC8FB2;
+}
+
+/* Картан дээрх өнгөт зурвас — жагсаалтыг амьд болгоно */
+.org-card{ position:relative; }
+.org-card::before{
+  content:"";
+  position:absolute;
+  left:0; top:22px; bottom:22px;
+  width:3px;
+  border-radius:0 3px 3px 0;
+  background:var(--a-line, transparent);
+  opacity:0;
+  transition:opacity .2s var(--ease);
+}
+.org-card:hover::before{ opacity:1; }
+
+
+/* ══════════════════════════════════════════
+   9д. МӨРНИЙ ХАРИУ ҮЙЛДЭЛ
+   ══════════════════════════════════════════ */
+.row{ transition:border-color .2s var(--ease), box-shadow .2s var(--ease); }
+.row:hover{ border-color:var(--faint); box-shadow:var(--sh-2); }
+
+
+/* ══════════════════════════════════════════
+   9е. ХООСОН ТӨЛӨВ
+   Дүрстэй болсон — юу дутуу байгаа нь нүдэнд шууд ойлгогдоно
+   ══════════════════════════════════════════ */
+.blank-icon{
+  width:56px; height:56px;
+  margin:0 auto 18px;
+  border-radius:16px;
+  background:var(--accent-soft);
+  color:var(--accent);
+  display:grid; place-items:center;
+  transition:background-color .4s var(--ease), color .4s var(--ease);
+}
+.blank-icon svg{ width:25px; height:25px; }
+
+
+/* ══════════════════════════════════════════
+   9ё. АЧААЛЖ БУЙ ХЭЛБЭР
+   Skeleton нь жинхэнэ агуулгын өндөртэй тааруулав —
+   ачаалагдмагц хуудас үсрэхгүй
+   ══════════════════════════════════════════ */
+.skeleton-card{ height:214px; border-radius:var(--r-lg); }
+.skeleton-hero{ height:186px; border-radius:var(--r-lg); margin-bottom:20px; }
+.skeleton-row { height:104px; border-radius:var(--r-lg); margin-bottom:12px; }
+
+/* ══════════════════════════════════════════
+   10. ДООД ТАБ МӨР (зөвхөн гар утсанд)
+   ══════════════════════════════════════════ */
+.tabbar{ display:none; }
+
+.tabbar-item{
+  display:grid;
+  justify-items:center;
+  gap:4px;
+  padding:9px 6px 6px;
+  text-decoration:none;
+  color:var(--faint);
+  font-size:10.5px;
+  font-weight:600;
+  border-radius:var(--r-sm);
+  min-height:52px;
+  transition:color .2s var(--ease);
+}
+.tabbar-item svg{ width:21px; height:21px; }
+.tabbar-item[aria-current="page"]{ color:var(--accent); }
+
+
+/* ══════════════════════════════════════════
+   11. ХАРИУ ҮЙЛДЭЛТ БАЙДАЛ
+   Гурван таслалт: 900 / 780 / 470
+   ══════════════════════════════════════════ */
+
+html{ -webkit-text-size-adjust:100%; }
+/* clip нь hidden-ээс дээр — гүйлгэх контейнер үүсгэдэггүй
+   тул topbar-ын position:sticky ажилласаар байна */
+body{ overflow-x:clip; }
+img, svg, video{ max-width:100%; }
+
+/* Урт үг хайрцгаас гарахаас сэргийлнэ */
+h1, h2, h3, p, .meta, .pl-org{ overflow-wrap:anywhere; }
+
+
+/* ---------- Планшет ---------- */
+@media (max-width:900px){
+  .auth{ grid-template-columns:1fr; }
+  .auth-stage{
+    padding:26px 22px 30px;
+    gap:18px;
+    padding-top:calc(26px + env(safe-area-inset-top));
+  }
+  .auth-stage .brand{ font-size:17px; }
+  .stage-thesis{ font-size:26px; margin-bottom:0; max-width:100%; }
+  .track, .stage-foot{ display:none; }
+  .auth-panel{ padding:30px 20px 70px; }
+
+  .filter-bar{ grid-template-columns:1fr; }
+  .grid{ grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); }
+}
+
+
+/* ---------- Гар утас ---------- */
+@media (max-width:780px){
+
+  /* Дээд талын холбоосууд доод таб руу шилжинэ */
+  .tabs-nav{ display:none; }
+  .who{ display:none; }
+
+  .topbar-inner{
+    height:auto;
+    min-height:56px;
+    padding:10px 16px;
+    padding-top:calc(10px + env(safe-area-inset-top));
+    gap:12px;
+  }
+  .topbar-user{ margin-left:auto; }
+
+  .tabbar{
+    display:grid;
+    grid-auto-flow:column;
+    grid-auto-columns:1fr;
+    position:fixed;
+    left:0; right:0; bottom:0;
+    z-index:35;
+    background:color-mix(in srgb, var(--card) 94%, transparent);
+    backdrop-filter:saturate(180%) blur(14px);
+    border-top:1px solid var(--line);
+    padding:4px 8px;
+    padding-bottom:calc(4px + env(safe-area-inset-bottom));
+  }
+
+  /* Доод таб агуулгыг хаахаас сэргийлж зай үлдээнэ */
+  /* Доод таб агуулгыг хаахаас сэргийлж зай үлдээнэ.
+     .view нь зөвхөн нэвтэрсэн хуудсанд байдаг тул энд тавихад аюулгүй. */
+  .view{ padding:22px 16px calc(86px + env(safe-area-inset-bottom)); }
+
+  .toast{ bottom:calc(80px + env(safe-area-inset-bottom)); }
+
+  /* iOS дээр 16px-ээс жижиг талбарт орохоор дэлгэц томордог */
+  .field input, .field select, .field textarea{ font-size:16px; padding:13px 15px; }
+
+  /* Хуруунд тохирох хэмжээ — 44px доогуур байж болохгүй */
+  .btn{ padding:15px; }
+  .btn.sm{ padding:11px 16px; min-height:42px; }
+  .icon-btn{ width:42px; height:42px; }
+  .chip{ padding:11px 18px; }
+  .pw-eye{ padding:11px 12px; }
+  .check input{ width:19px; height:19px; }
+
+  /* Хэсгүүд нарийсна */
+  .view-head h1, .card-head h1{ font-size:23px; }
+  .panel{ padding:20px 18px; border-radius:var(--r); }
+  .row{ padding:17px 18px; border-radius:var(--r); }
+  .row-in{ flex-direction:column; gap:14px; }
+  .row-acts{ width:100%; }
+  .org-card{ padding:18px; border-radius:var(--r); }
+  /* Шүүлтүүр — гурван талбар босоо, зай нь жигд */
+  .filter-bar{ padding:18px; border-radius:var(--r); gap:0; }
+  .filter-bar .field{ margin-bottom:14px; }
+  .filter-bar .field:last-of-type{ margin-bottom:0; }
+  .filter-bar select{ width:100%; }
+
+  .filter-reset{ padding:14px 0 0; justify-content:stretch; }
+  .filter-reset .btn.sm{ width:100%; }
+  .blank{ padding:38px 20px; }
+  .section-title{ margin:26px 0 12px; }
+
+  /* Статистик хоёр багана болно */
+  .tiles{ grid-template-columns:1fr 1fr; }
+  .tile{ padding:16px 18px; }
+  .tile b{ font-size:22px; }
+
+  /* Үнэмлэх босоо болно — цоолбор дээд хоёр буланд шилжинэ */
+  .placement{ grid-template-columns:1fr; border-radius:var(--r); }
+  .pl-main{ padding:22px 20px; }
+  .pl-org{ font-size:20px; }
+  .pl-bar{ width:18px; }
+  .pl-steps-label{ margin-left:11px; font-size:12px; }
+  .pl-steps{ margin-top:18px; }
+  .pl-stub{
+    flex-direction:row;
+    flex-wrap:wrap;
+    gap:16px 32px;
+    padding:20px 22px;
+    background:
+      radial-gradient(circle 9px at 0%   0%, var(--paper) 99%, transparent 100%),
+      radial-gradient(circle 9px at 100% 0%, var(--paper) 99%, transparent 100%),
+      var(--stub);
+  }
+  .pl-stub::before{
+    left:0; right:0; top:0; bottom:auto;
+    width:auto; height:2px;
+    background-image:linear-gradient(90deg, rgba(255,255,255,.45) 52%, transparent 52%);
+    background-size:11px 2px;
+  }
+
+  /* Явцын гурван алхам босоо болно */
+  .flow{ grid-template-columns:1fr; gap:8px; }
+  .flow-step{ display:flex; align-items:baseline; gap:12px; padding:13px 16px; }
+  .flow-step .mono{ margin-bottom:0; }
+
+  /* Ирсэн хүсэлтийн карт */
+  .req-head{ padding:16px 18px; gap:13px; }
+  .req-grid{ padding:16px 18px; gap:14px 18px; grid-template-columns:1fr 1fr; }
+  .req-acts{ padding:13px 18px; }
+  .req-acts .btn.sm{ flex:1; }
+  .cap{ max-width:100%; }
+
+  /* Дэд таб.
+     Богино нэр рүү шилжсэн тул бүгд багтана — гүйлгэх
+     шаардлагагүй. Grid ашигласнаар таб бүр яг тэнцүү
+     өргөнтэй болж, агуулгаасаа хамаарахгүй. */
+  .seg{
+    display:grid;
+    grid-auto-flow:column;
+    grid-auto-columns:1fr;
+    gap:4px;
+    width:100%;
+    border-radius:var(--r);
+    margin-bottom:20px;
+    overflow:visible;
+  }
+  .seg-btn{
+    min-width:0;
+    padding:12px 8px;
+    font-size:13px;
+    border-radius:calc(var(--r) - 5px);
+    text-align:center;
+  }
+  .seg-long,
+  .lbl-long { display:none; }
+  .seg-short,
+  .lbl-short{ display:inline; }
+
+  .theme-fab{ top:auto; bottom:20px; right:16px; }
+  .logo-frame{ width:74px; height:74px; }
+
+  /* Харанхуй толгой */
+  .hero{ padding:24px 20px; border-radius:var(--r); }
+  .hero-top{ gap:14px; margin-bottom:18px; }
+  .hero-facts{ gap:14px 24px; }
+  .skeleton-card{ height:190px; }
+  .skeleton-hero{ height:210px; }
+}
+
+
+/* ---------- Жижиг утас ---------- */
+@media (max-width:470px){
+  .pair{ grid-template-columns:1fr; }
+  .grid{ grid-template-columns:1fr; }
+  .tiles{ grid-template-columns:1fr 1fr; }
+  .row-acts{ display:grid; grid-template-columns:1fr; gap:8px; }
+  .row-acts .btn.sm{ width:100%; }
+  .row-acts .badge{ justify-self:start; }
+  .topbar .brand{ font-size:14px; }
+  .req-grid{ grid-template-columns:1fr; }
+  .panel > form > .btn:not(.sm),
+  .panel > .btn:not(.sm){ width:100%; }
+  .view{ padding:18px 14px calc(82px + env(safe-area-inset-bottom)); }
+  .tabbar-item span{ font-size:10px; }
+}
+
+
+/* ---------- Хэвтээ байрлал, намхан дэлгэц ---------- */
+@media (max-height:520px) and (max-width:900px){
+  .auth-stage{ padding:16px 20px; }
+  .stage-thesis{ font-size:20px; }
+  .stage-eyebrow{ margin-bottom:8px; }
+}
+
+
+/* ---------- Хөдөлгөөн багасгах ---------- */
+@media (prefers-reduced-motion:reduce){
+  *{ transition:none !important; animation:none !important; }
+  html{ scroll-behavior:auto; }
+}
+
+
+/* ---------- Хэвлэх ---------- */
+@media print{
+  .topbar, .tabbar, .theme-fab, .btn, .chips{ display:none !important; }
+  .view{ padding:0; max-width:100%; }
+  .panel, .row, .placement{ box-shadow:none; break-inside:avoid; }
+}
+
+/* ══════════════════════════════════════════
+   12. ОРОН ТООНЫ ЗУРВАС
+   Тоо уншихаас илүү хэлбэр хараад ойлгоно
+   ══════════════════════════════════════════ */
+.cap{ margin-top:12px; max-width:320px; }
+
+.cap-track{
+  height:6px;
+  border-radius:999px;
+  background:var(--line);
+  overflow:hidden;
+  display:flex;
+}
+.cap-fill{
+  height:100%;
+  background:var(--success);
+  transition:width .4s var(--ease);
+}
+.cap-track[data-full="true"] .cap-fill{ background:var(--faint); }
+
+.cap-label{
+  display:block;
+  margin-top:7px;
+  font-size:12.5px;
+  color:var(--muted);
+}
+.cap-label b{ color:var(--text); }
+.cap-label.full b{ color:var(--faint); }
+
+
+/* ══════════════════════════════════════════
+   13. ИРСЭН ХҮСЭЛТИЙН КАРТ
+   Оюутан бүр нэг догол мөр текст байсныг зассан
+   ══════════════════════════════════════════ */
+.req{ padding:0; overflow:hidden; }
+
+.req-head{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  padding:19px 22px;
+  border-bottom:1px solid var(--line-soft);
+}
+/* Дундах блок л сунана. Өмнө нь div:first-of-type гэж
+   бичсэн тул аватар өөрөө сунаж, дөрвөлжин байхаа больсон. */
+.req-who{ flex:1; min-width:0; }
+.req-head h3{ margin-bottom:3px; }
+.req-head .meta{ font-size:13px; }
+.req-head .badge{ flex-shrink:0; align-self:flex-start; }
+
+/* Аватар ямар ч тохиолдолд хэлбэрээ алдахгүй */
+.avatar{ flex-shrink:0; aspect-ratio:1; }
+
+.req-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+  gap:16px 24px;
+  padding:18px 22px;
+}
+.req-grid .mono{ display:block; color:var(--faint); margin-bottom:4px; }
+.req-grid b{ font-size:14.5px; font-weight:600; }
+.req-grid a{ color:var(--accent); text-decoration:none; font-weight:600; }
+.req-grid a:hover{ text-decoration:underline; }
+
+.req-acts{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  padding:15px 22px;
+  background:var(--paper);
+  border-top:1px solid var(--line-soft);
+}
+
+
+/* ══════════════════════════════════════════
+   14. ШҮҮЛТҮҮРИЙН МӨР
+   Хайлт нь өргөн, хоёр сонголт нь нарийн.
+   Нарийн дэлгэцэнд гурвуулаа босоо жагсана.
+   ══════════════════════════════════════════ */
+.filter-bar{
+  display:grid;
+  grid-template-columns:1.7fr 1fr 1fr;
+  gap:0 15px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  padding:20px 22px 8px;
+  margin-bottom:24px;
+  box-shadow:var(--sh-1);
+}
+
+/* Идэвхтэй шүүлтүүрийг өнгөөр ялгана — аль нь
+   тохируулагдсаныг нэг харцаар мэдэхийн тулд */
+.filter-bar select[data-on="true"]{
+  border-color:var(--accent);
+  color:var(--accent);
+  font-weight:600;
+}
+
+.filter-reset{
+  grid-column:1 / -1;
+  display:flex;
+  justify-content:flex-end;
+  padding-bottom:12px;
+}
+
+
+/* ══════════════════════════════════════════
+   15. ТОВЧНЫ ӨРГӨН
+   Хэсэг доторх товч бүтэн өргөнөөр сунах шаардлагагүй
+   ══════════════════════════════════════════ */
+.panel > form > .btn:not(.sm),
+.panel > .btn:not(.sm){
+  width:auto;
+  min-width:190px;
+}
+
+/* ══════════════════════════════════════════
+   16. ХАЛИХААС СЭРГИЙЛЭХ
+   ──────────────────────────────────────────
+   Grid болон flex доторх элемент анхдагчаар
+   min-width:auto байдаг — өөрөөр хэлбэл агуулгаасаа
+   жижиг болохоос ТАТГАЛЗДАГ.
+
+   <select> нь хамгийн урт сонголтынхоо өргөнийг
+   шаарддаг тул "Улаанбаатар — Сонгинохайрхан (2)"
+   гэсэн мөр багануудыг тэлж, хайрцаг гадагшаа халина.
+
+   min-width:0 нь энэ татгалзлыг арилгана.
+   ══════════════════════════════════════════ */
+
+html, body{ max-width:100%; }
+
+/* ЗӨВХӨН min-width. max-width энд тавьбал .view-ийн
+   1140px, .auth-card-ийн 470px хязгаарыг дарж бичиж,
+   агуулга дэлгэцийн хоёр зах руу наалддаг. */
+#app, .view, .auth-panel, .auth-card{ min-width:0; }
+
+/* Талбар ба доторх элементүүд */
+.field{ min-width:0; }
+.field input,
+.field select,
+.field textarea{
+  min-width:0;
+  max-width:100%;
+  text-overflow:ellipsis;
+}
+
+/* Grid болон flex доторх бүх шууд хүүхэд */
+.pair > *,
+.filter-bar > *,
+.grid > *,
+.tiles > *,
+.req-grid > *,
+.hero-facts > *,
+.kv > *,
+.row-in > *,
+.flow > *,
+.placement > *{ min-width:0; }
+
+/* Урт текст хайрцгаа тэлэхээс сэргийлнэ */
+.req-grid b,
+.req-grid a,
+.hero-facts a,
+.kv > div,
+.who b,
+.org-card h3,
+.row h3{ overflow-wrap:anywhere; }
+
+/* Хажуу тийш гүйлгэдэг мөрүүд */
+.seg,
+.chips,
+.tabs-nav{
+  min-width:0;
+  max-width:100%;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-x:contain;
+}
+
+/* Дадлагын үнэмлэхийн доторх хэсгүүд */
+.pl-main, .pl-stub{ min-width:0; }
+.pl-contact{ overflow-wrap:anywhere; }
+.pl-steps{ flex-wrap:wrap; row-gap:8px; }
+
+/* Зураг, дүрс хэзээ ч хайрцгаасаа гарахгүй */
+img, svg, video, canvas{ max-width:100%; height:auto; }
+.avatar img, .logo-frame img{ height:100%; }

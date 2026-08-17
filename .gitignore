@@ -1,0 +1,34 @@
+# ── Нууц тохиргоо — хамгийн чухал хэсэг ──
+.env
+.env.*
+!.env.example
+
+# ── Node ──
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# ── Хэрэглэгчийн байршуулсан зураг ──
+public/uploads/*
+!public/uploads/.gitkeep
+
+# ── Өгөгдлийн сангийн нөөц ──
+*.sql.gz
+backup*.sql
+dump*.sql
+
+# ── Лог ──
+*.log
+logs/
+
+# ── Засварлагч, үйлдлийн систем ──
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Түр файл ──
+tmp/
+temp/
+*.tmp
